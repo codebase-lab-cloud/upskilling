@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Senior Analyst to Architect Accelerator</title>
+
+  <!-- PWA & Mobile Web App Meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="UpskillTracker">
+  <meta name="application-name" content="UpskillTracker">
+  <meta name="theme-color" content="#000000" id="meta-theme-color">
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="alternate icon" href="apple-touch-icon.png">
+
+  <!-- Tailwind via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            oled: '#000000',
+            cardDark: '#09090b',
+            subDark: '#121215',
+            borderDark: '#27272a',
+            borderLight: '#e4e4e7',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Safe area padding for iPhone 15 notch / dynamic island and home indicator */
+    :root {
+      --sat: env(safe-area-inset-top, 0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left, 0px);
+      --sar: env(safe-area-inset-right, 0px);
+    }
+    body {
+      padding-top: max(12px, var(--sat));
+      padding-bottom: max(80px, calc(var(--sab) + 68px));
+      -webkit-tap-highlight-color: transparent;
+    }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb { background: #27272a; }
+
+    /* Touch target comfort */
+    button, input, select, textarea {
+      touch-action: manipulation;
+    }
+    .badge-p1 { background: rgba(59, 130, 246, 0.12); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-p2 { background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-p3 { background: rgba(245, 158, 11, 0.12); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-p4 { background: rgba(168, 85, 247, 0.12); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .badge-custom { background: rgba(236, 72, 153, 0.12); color: #ec4899; border: 1px solid rgba(236, 72, 153, 0.3); }
+  </style>
+</head>
+<body class="bg-slate-50 text-zinc-900 dark:bg-oled dark:text-zinc-100 transition-colors duration-200 antialiased min-h-screen font-sans selection:bg-blue-600 selection:text-white px-3 sm:px-6 max-w-7xl mx-auto">
+
+  <!-- TOP HEADER -->
+  <header class="bg-white dark:bg-cardDark border border-zinc-200 dark:border-borderDark rounded-2xl p-4 sm:p-6 shadow-sm mb-4 relative overflow-hidden">
+    <div class="flex items-start justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <img src="icon.svg" alt="App Icon" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl shadow-md border border-zinc-200 dark:border-zinc-800 flex-shrink-0">
+        <div>
+          <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">22-Week Accelerator</span>
+            <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">Senior → Lead / Architect</span>
+          </div>
+          <h1 class="text-lg sm:text-2xl font-black tracking-tight text-zinc-900 dark:text-white">
+            Upskilling & Leadership Tracker
+          </h1>
+        </div>
+      </div>
+
+      <!-- Controls: Theme Toggle & Data Actions -->
+      <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
+        <!-- Theme Toggle -->
+        <button onclick="toggleTheme()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Switch Theme">
+          <span id="themeIcon" class="text-sm">🌙</span>
+          <span class="hidden sm:inline" id="themeLabel">Dark Mode</span>
+        </button>
+
+        <!-- Export -->
+        <button onclick="exportData()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Export JSON">
+          <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+          <span class="hidden md:inline">Export</span>
+        </button>
+
+        <!-- Import -->
+        <button onclick="document.getElementById('importFile').click()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Import JSON">
+          <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12"/></svg>
+          <span class="hidden md:inline">Import</span>
+        </button>
+        <input type="file" id="importFile" class="hidden" accept=".json" onchange="importData(event)">
+      </div>
+    </div>
+
+    <!-- OVERALL PROGRESS HUD -->
+    <div class="mt-4 pt-4 border-t border-zinc-200 dark:border-borderDark grid grid-cols-2 sm:grid-cols-5 gap-2.5 sm:gap-3">
+      <div class="bg-zinc-50 dark:bg-subDark p-2.5 sm:p-3 rounded-xl border border-zinc-200 dark:border-borderDark col-span-2 sm:col-span-1">
+        <div class="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 flex items-center justify-between">
+          <span>Sprint Progress</span>
+          <span id="overallPercentage" class="font-bold text-blue-600 dark:text-blue-400 text-xs">0%</span>
+        </div>
+        <div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1.5 mt-1.5 overflow-hidden">
+          <div id="overallProgressBar" class="bg-blue-600 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 flex justify-between">
+          <span id="completedWeeksCount">0 of 22 modules</span>
+          <span id="streakDays">🔥 Active</span>
+        </div>
+      </div>
+
+      <div class="bg-zinc-50 dark:bg-subDark p-2.5 sm:p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <div class="text-[11px] text-blue-600 dark:text-blue-400 font-medium">P1: Consulting</div>
+        <div class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white mt-0.5" id="p1Stats">0 / 4 Wk</div>
+        <div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1 mt-1.5">
+          <div id="p1ProgressBar" class="bg-blue-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="bg-zinc-50 dark:bg-subDark p-2.5 sm:p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <div class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">P2: Data & BI</div>
+        <div class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white mt-0.5" id="p2Stats">0 / 6 Wk</div>
+        <div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1 mt-1.5">
+          <div id="p2ProgressBar" class="bg-emerald-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="bg-zinc-50 dark:bg-subDark p-2.5 sm:p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <div class="text-[11px] text-amber-600 dark:text-amber-400 font-medium">P3: Stats & Python</div>
+        <div class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white mt-0.5" id="p3Stats">0 / 6 Wk</div>
+        <div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1 mt-1.5">
+          <div id="p3ProgressBar" class="bg-amber-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="bg-zinc-50 dark:bg-subDark p-2.5 sm:p-3 rounded-xl border border-zinc-200 dark:border-borderDark col-span-2 sm:col-span-1">
+        <div class="text-[11px] text-purple-600 dark:text-purple-400 font-medium">P4: Capstone</div>
+        <div class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white mt-0.5" id="p4Stats">0 / 6 Wk</div>
+        <div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1 mt-1.5">
+          <div id="p4ProgressBar" class="bg-purple-500 h-1 rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- DESKTOP TOP NAV TABS (HIDDEN ON MOBILE, USES BOTTOM BAR ON IPHONE) -->
+  <nav class="hidden sm:flex items-center gap-2 border-b border-zinc-200 dark:border-borderDark mb-5 text-sm overflow-x-auto pb-1">
+    <button onclick="switchTab('roadmap')" id="tabBtn-roadmap" class="px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-1.5">
+      📋 22-Week Sprint Roadmap
+    </button>
+    <button onclick="switchTab('mindmap')" id="tabBtn-mindmap" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
+      🧠 Strategic Competency Matrix
+    </button>
+    <button onclick="switchTab('mece-builder')" id="tabBtn-mece-builder" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
+      📐 MECE & SCQA Canvas
+    </button>
+    <button onclick="switchTab('cheatsheet')" id="tabBtn-cheatsheet" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
+      ⚡ Architect Cheat Sheet
+    </button>
+    <button onclick="switchTab('timer')" id="tabBtn-timer" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
+      ⏱️ Focus Timer
+    </button>
+  </nav>
+
+  <!-- TAB 1: 22-WEEK SPRINT ROADMAP -->
+  <section id="view-roadmap" class="space-y-4">
+    <!-- FILTERS AND ACTION BAR -->
+    <div class="bg-white dark:bg-cardDark p-3.5 sm:p-4 rounded-xl border border-zinc-200 dark:border-borderDark flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+      <!-- Phase Filter Pills -->
+      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
+        <button onclick="setPhaseFilter('ALL')" id="filter-phase-ALL" class="px-2.5 py-1.5 rounded-lg font-semibold bg-blue-600 text-white flex-shrink-0">All</button>
+        <button onclick="setPhaseFilter(1)" id="filter-phase-1" class="px-2.5 py-1.5 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">P1: Consulting</button>
+        <button onclick="setPhaseFilter(2)" id="filter-phase-2" class="px-2.5 py-1.5 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">P2: Data & BI</button>
+        <button onclick="setPhaseFilter(3)" id="filter-phase-3" class="px-2.5 py-1.5 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">P3: Stats/Python</button>
+        <button onclick="setPhaseFilter(4)" id="filter-phase-4" class="px-2.5 py-1.5 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">P4: Capstone</button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <select id="statusFilter" onchange="renderRoadmap()" class="bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-lg px-2.5 py-1.5 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none flex-1 md:flex-none">
+          <option value="ALL">All Status</option>
+          <option value="COMPLETED">Completed</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="TODO">To Do</option>
+        </select>
+
+        <input type="text" id="searchInput" oninput="renderRoadmap()" placeholder="Search topics, tools..." class="bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-lg px-2.5 py-1.5 text-xs text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 focus:outline-none flex-1 sm:w-44">
+
+        <!-- Add Custom Module Button -->
+        <button onclick="openAddModuleModal()" class="px-3 py-1.5 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold hover:opacity-90 transition flex items-center gap-1 flex-shrink-0" title="Add a custom week or module">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span class="hidden sm:inline">Add Module</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- WEEKS CONTAINER -->
+    <div id="weeksContainer" class="space-y-3">
+      <!-- Injected by JavaScript -->
+    </div>
+  </section>
+
+  <!-- TAB 2: COMPETENCY MATRIX & MIND MAP -->
+  <section id="view-mindmap" class="hidden space-y-4">
+    <div class="bg-white dark:bg-cardDark p-4 sm:p-5 rounded-2xl border border-zinc-200 dark:border-borderDark">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-4">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+            Strategic Competency Mind Map
+          </h2>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            6 core pillars directly from your strategy map. Tap badges to cycle mastery: Novice → Competent → Practitioner → SME/Lead.
+          </p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5" id="competencyGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: MECE ISSUE TREE & HYPOTHESIS CANVAS -->
+  <section id="view-mece-builder" class="hidden space-y-4">
+    <div class="bg-white dark:bg-cardDark p-4 sm:p-6 rounded-2xl border border-zinc-200 dark:border-borderDark">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+        <div>
+          <h2 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
+            MECE Issue Tree & SCQA Canvas
+          </h2>
+          <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+            Top-down consulting problem breakdown. Auto-saves directly in your browser.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button onclick="loadMECETemplate('profitability')" class="px-2.5 py-1 text-xs rounded bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+            Profitability Tree
+          </button>
+          <button onclick="loadMECETemplate('churn')" class="px-2.5 py-1 text-xs rounded bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+            Churn Tree
+          </button>
+          <button onclick="clearMECECanvas()" class="px-2.5 py-1 text-xs rounded bg-zinc-100 dark:bg-subDark text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-borderDark">
+            Clear
+          </button>
+        </div>
+      </div>
+
+      <!-- SCQA Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
+          <label class="block text-[11px] font-bold text-blue-600 dark:text-blue-400 mb-1">1. Situation</label>
+          <textarea id="scqa-s" rows="3" oninput="saveMECENotes()" placeholder="Current state context..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+        </div>
+        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
+          <label class="block text-[11px] font-bold text-amber-600 dark:text-amber-400 mb-1">2. Complication</label>
+          <textarea id="scqa-c" rows="3" oninput="saveMECENotes()" placeholder="The obstacle or pain point..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+        </div>
+        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
+          <label class="block text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mb-1">3. Core Question</label>
+          <textarea id="scqa-q" rows="3" oninput="saveMECENotes()" placeholder="What is the key question to solve?..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+        </div>
+        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
+          <label class="block text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1">4. Governed Hypothesis</label>
+          <textarea id="scqa-a" rows="3" oninput="saveMECENotes()" placeholder="Initial answer to test..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+        </div>
+      </div>
+
+      <!-- MECE Branches -->
+      <div class="bg-zinc-50 dark:bg-subDark p-3.5 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <h3 class="text-xs font-bold text-zinc-900 dark:text-white mb-2 flex items-center justify-between">
+          <span>MECE Sub-Branch Decomposition</span>
+          <span class="text-[10px] text-zinc-500 font-normal">Mutually Exclusive, Collectively Exhaustive</span>
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div class="p-3 bg-white dark:bg-cardDark rounded-lg border border-zinc-200 dark:border-borderDark">
+            <input type="text" id="mece-b1-title" oninput="saveMECENotes()" value="Pillar 1: Revenue Drivers" class="w-full font-semibold text-xs text-blue-600 dark:text-blue-400 bg-transparent border-b border-zinc-200 dark:border-borderDark pb-1 mb-1.5 focus:outline-none">
+            <textarea id="mece-b1-body" rows="4" oninput="saveMECENotes()" class="w-full text-xs text-zinc-700 dark:text-zinc-300 bg-transparent resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+          </div>
+          <div class="p-3 bg-white dark:bg-cardDark rounded-lg border border-zinc-200 dark:border-borderDark">
+            <input type="text" id="mece-b2-title" oninput="saveMECENotes()" value="Pillar 2: Cost Optimization" class="w-full font-semibold text-xs text-emerald-600 dark:text-emerald-400 bg-transparent border-b border-zinc-200 dark:border-borderDark pb-1 mb-1.5 focus:outline-none">
+            <textarea id="mece-b2-body" rows="4" oninput="saveMECENotes()" class="w-full text-xs text-zinc-700 dark:text-zinc-300 bg-transparent resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+          </div>
+          <div class="p-3 bg-white dark:bg-cardDark rounded-lg border border-zinc-200 dark:border-borderDark">
+            <input type="text" id="mece-b3-title" oninput="saveMECENotes()" value="Pillar 3: Retention & Churn" class="w-full font-semibold text-xs text-purple-600 dark:text-purple-400 bg-transparent border-b border-zinc-200 dark:border-borderDark pb-1 mb-1.5 focus:outline-none">
+            <textarea id="mece-b3-body" rows="4" oninput="saveMECENotes()" class="w-full text-xs text-zinc-700 dark:text-zinc-300 bg-transparent resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 4: CHEAT SHEET -->
+  <section id="view-cheatsheet" class="hidden space-y-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <h3 class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2">Advanced SQL: Running Totals & Window Functions</h3>
+        <pre class="bg-zinc-900 text-zinc-200 p-3 rounded-lg text-xs font-mono overflow-x-auto leading-relaxed">
+WITH daily_sales AS (
+  SELECT order_date, SUM(revenue) AS daily_rev
+  FROM orders GROUP BY 1
+)
+SELECT 
+  order_date, daily_rev,
+  SUM(daily_rev) OVER (ORDER BY order_date ROWS UNBOUNDED PRECEDING) AS cumulative_rev,
+  AVG(daily_rev) OVER (ORDER BY order_date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS mavg_7d,
+  LAG(daily_rev, 1) OVER (ORDER BY order_date) AS prev_day_rev
+FROM daily_sales;</pre>
+      </div>
+
+      <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <h3 class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2">Power BI DAX: YoY Growth & Cohort Retention</h3>
+        <pre class="bg-zinc-900 text-zinc-200 p-3 rounded-lg text-xs font-mono overflow-x-auto leading-relaxed">
+Sales_YoY_Growth = 
+VAR CurrentSales = [Total_Revenue]
+VAR PriorYearSales = 
+    CALCULATE([Total_Revenue], SAMEPERIODLASTYEAR('DimDate'[Date]))
+RETURN
+    DIVIDE(CurrentSales - PriorYearSales, PriorYearSales, 0)
+
+Retention_Rate = 
+DIVIDE(
+    CALCULATE(DISTINCTCOUNT(FactOrders[CustomerID]), FactOrders[Offset] = SELECTEDVALUE(DimCohort[Month])),
+    CALCULATE(DISTINCTCOUNT(FactOrders[CustomerID]), FactOrders[Offset] = 0)
+)</pre>
+      </div>
+
+      <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <h3 class="text-xs font-bold text-amber-600 dark:text-amber-400 mb-2">Python SciPy & Statsmodels: Hypothesis Tests</h3>
+        <pre class="bg-zinc-900 text-zinc-200 p-3 rounded-lg text-xs font-mono overflow-x-auto leading-relaxed">
+from scipy import stats
+import statsmodels.api as sm
+
+# Welch's two-sample t-test
+t_stat, p_val = stats.ttest_ind(variant_rev, control_rev, equal_var=False)
+
+# OLS Regression
+X = sm.add_constant(df[['spend', 'discount', 'tenure']])
+model = sm.OLS(df['revenue'], X).fit()
+print(model.summary())</pre>
+      </div>
+
+      <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
+        <h3 class="text-xs font-bold text-purple-600 dark:text-purple-400 mb-2">Executive Storytelling: Pyramid Principle Rules</h3>
+        <div class="space-y-2 text-xs text-zinc-700 dark:text-zinc-300">
+          <div class="p-2 rounded bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark">
+            <strong>Rule 1: Answer First (BLUF):</strong> State recommendation in slide 1 before methodology.
+          </div>
+          <div class="p-2 rounded bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark">
+            <strong>Rule 2: Action Titles:</strong> Replace <em>"Churn by Segment"</em> with <em>"Mid-market Churn Rose 18% Due to Onboarding Friction"</em>.
+          </div>
+          <div class="p-2 rounded bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark">
+            <strong>Rule 3: Rule of Three:</strong> Group supporting arguments into 3 mutually exclusive buckets.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 5: POMODORO FOCUS TIMER -->
+  <section id="view-timer" class="hidden space-y-4">
+    <div class="max-w-md mx-auto bg-white dark:bg-cardDark p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-borderDark text-center shadow-sm">
+      <h3 class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-1">Deep Work Sprint</h3>
+      <p class="text-xs text-zinc-500 dark:text-zinc-400 mb-5">25-minute focused interval for deliberate practice</p>
+
+      <div class="relative w-44 h-44 mx-auto flex items-center justify-center">
+        <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="44" stroke="currentColor" stroke-width="6" class="text-zinc-200 dark:text-zinc-800" fill="transparent" />
+          <circle id="timerCircle" cx="50" cy="50" r="44" stroke="currentColor" stroke-width="6" class="text-blue-500 transition-all duration-1000" fill="transparent" stroke-dasharray="276.46" stroke-dashoffset="0" stroke-linecap="round" />
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span id="timerDisplay" class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white font-mono">25:00</span>
+          <span id="timerStatus" class="text-xs text-zinc-500 dark:text-zinc-400 mt-1">Ready</span>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center gap-2.5 mt-6">
+        <button id="timerToggleBtn" onclick="toggleTimer()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold text-xs text-white transition">
+          Start Focus Session
+        </button>
+        <button onclick="resetTimer()" class="px-3.5 py-2.5 rounded-xl bg-zinc-100 dark:bg-subDark hover:bg-zinc-200 dark:hover:bg-zinc-800 text-xs text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-borderDark transition">
+          Reset
+        </button>
+      </div>
+
+      <div class="mt-4 pt-4 border-t border-zinc-200 dark:border-borderDark text-xs text-zinc-500 dark:text-zinc-400">
+        Completed today: <span id="pomodoroCount" class="font-bold text-zinc-900 dark:text-white">0</span> sprints (~<span id="pomodoroHours" class="font-bold text-blue-500">0.0</span> hrs)
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL: WEEK DRILL-DOWN & EXTENSIBLE TASKS -->
+  <div id="weekModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center sm:p-4">
+    <div class="bg-white dark:bg-cardDark border-t sm:border border-zinc-200 dark:border-borderDark rounded-t-3xl sm:rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-200">
+      
+      <!-- Modal Header -->
+      <div class="p-4 sm:p-5 border-b border-zinc-200 dark:border-borderDark flex items-start justify-between bg-zinc-50 dark:bg-subDark">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="modalWeekBadge" class="px-2 py-0.5 rounded text-xs font-semibold badge-p1">Week X</span>
+            <span id="modalPhaseBadge" class="text-xs text-zinc-500 dark:text-zinc-400">Phase X</span>
+          </div>
+          <h3 id="modalWeekTitle" class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white mt-1">Topic Title</h3>
+          <p id="modalWeekTools" class="text-xs text-blue-600 dark:text-blue-400 mt-0.5">Tools: Power BI, Python</p>
+        </div>
+        <button onclick="closeWeekModal()" class="text-zinc-400 hover:text-zinc-700 dark:hover:text-white p-1.5 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-sm flex-1">
+        <div>
+          <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1">Objectives & Senior-to-Lead Shift</h4>
+          <p id="modalObjectives" class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed"></p>
+        </div>
+
+        <!-- Deliverable Checklist & Future Task Adder -->
+        <div>
+          <div class="flex items-center justify-between mb-1.5">
+            <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Deliverable Tasks & Milestones</h4>
+            <span class="text-[10px] text-zinc-400" id="modalTasksCount">0/0</span>
+          </div>
+          
+          <div id="modalTasksList" class="space-y-1.5 bg-zinc-50 dark:bg-subDark p-2.5 rounded-xl border border-zinc-200 dark:border-borderDark text-xs">
+            <!-- Dynamic task checkboxes -->
+          </div>
+
+          <!-- Future Task Input Form -->
+          <div class="mt-2.5 flex items-center gap-1.5">
+            <input type="text" id="newCustomTaskInput" placeholder="+ Add custom deliverable/task..." class="flex-1 bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500" onkeydown="if(event.key==='Enter') addCustomTaskToCurrentWeek()">
+            <button onclick="addCustomTaskToCurrentWeek()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition flex-shrink-0">
+              Add Task
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1">Key Frameworks & Knowledge Notes</h4>
+          <div id="modalKeyConcepts" class="p-2.5 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30 rounded-xl text-xs text-blue-800 dark:text-blue-300 space-y-1">
+          </div>
+        </div>
+
+        <div>
+          <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1">Personal Notes & Artifact Links</h4>
+          <textarea id="modalNotes" rows="3" oninput="saveCurrentWeekNotes()" placeholder="Paste GitHub links, case study summary notes, or interview talking points..." class="w-full bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl p-2.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-3.5 sm:p-4 border-t border-zinc-200 dark:border-borderDark bg-zinc-50 dark:bg-subDark flex justify-between items-center">
+        <span class="text-[11px] text-zinc-500">Auto-saved in browser</span>
+        <button onclick="closeWeekModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white transition">
+          Done & Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD CUSTOM MODULE / WEEK -->
+  <div id="addModuleModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center sm:p-4">
+    <div class="bg-white dark:bg-cardDark border-t sm:border border-zinc-200 dark:border-borderDark rounded-t-3xl sm:rounded-2xl w-full max-w-md p-5 shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-zinc-200 dark:border-borderDark mb-4">
+        <h3 class="text-base font-bold text-zinc-900 dark:text-white">Add Custom Sprint / Module</h3>
+        <button onclick="closeAddModuleModal()" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-white">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Module Title *</label>
+          <input type="text" id="newModTitle" placeholder="e.g. Generative AI Agents for Enterprise Analytics" class="w-full bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Phase Allocation</label>
+          <select id="newModPhase" class="w-full bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500">
+            <option value="1">Phase 1 · Consulting Foundations</option>
+            <option value="2">Phase 2 · Data Foundations & BI</option>
+            <option value="3">Phase 3 · Statistics & Python</option>
+            <option value="4" selected>Phase 4 · Advanced Analytics & Capstone</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Tools Required</label>
+          <input type="text" id="newModTools" placeholder="e.g. LangChain / OpenAI API / FastAPI" class="w-full bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+        <div>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Key Objectives</label>
+          <textarea id="newModObjectives" rows="2" placeholder="What core capability does this module deliver?" class="w-full bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+        </div>
+        <div>
+          <label class="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">Initial Deliverables (comma separated)</label>
+          <input type="text" id="newModTasks" placeholder="e.g. Build prototype agent, Write architecture memo" class="w-full bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+      </div>
+
+      <div class="mt-5 flex items-center justify-end gap-2">
+        <button onclick="closeAddModuleModal()" class="px-4 py-2 rounded-xl text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-subDark">
+          Cancel
+        </button>
+        <button onclick="saveNewModule()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white">
+          Create Module
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE STICKY BOTTOM NAVIGATION BAR (IPHONE 15 OPTIMIZED) -->
+  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-cardDark/90 backdrop-blur-md border-t border-zinc-200 dark:border-borderDark px-2 py-1 flex items-center justify-around shadow-lg" style="padding-bottom: max(6px, env(safe-area-inset-bottom));">
+    <button onclick="switchTab('roadmap')" id="mobTab-roadmap" class="flex flex-col items-center py-1 px-3 text-blue-600 dark:text-blue-400">
+      <span class="text-lg">📋</span>
+      <span class="text-[10px] font-bold">Roadmap</span>
+    </button>
+    <button onclick="switchTab('mindmap')" id="mobTab-mindmap" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
+      <span class="text-lg">🧠</span>
+      <span class="text-[10px] font-medium">Skills</span>
+    </button>
+    <button onclick="switchTab('mece-builder')" id="mobTab-mece-builder" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
+      <span class="text-lg">📐</span>
+      <span class="text-[10px] font-medium">MECE</span>
+    </button>
+    <button onclick="switchTab('cheatsheet')" id="mobTab-cheatsheet" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
+      <span class="text-lg">⚡</span>
+      <span class="text-[10px] font-medium">Cheats</span>
+    </button>
+    <button onclick="switchTab('timer')" id="mobTab-timer" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
+      <span class="text-lg">⏱️</span>
+      <span class="text-[10px] font-medium">Timer</span>
+    </button>
+  </nav>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // --- 22-WEEK ROADMAP BASE DATA ---
+    const BASE_ROADMAP_DATA = [
+      {
+        id: "w1", week: "Week 1", phase: 1,
+        phaseName: "PHASE 1 · Consulting Foundations",
+        title: "MECE Principle + Issue Trees", tools: "Word / PPT / Miro",
+        objectives: "Master structuring ambiguous business problems without overlap or gaps. Transition from reactive data puller to structured problem solver.",
+        badgeClass: "badge-p1",
+        concepts: [
+          "MECE Rule: Mutually Exclusive (no overlaps) and Collectively Exhaustive (covers all drivers).",
+          "Algebraic Trees (Revenue = Price × Volume) vs Qualitative Decision Trees.",
+          "80/20 Prioritization: Target the 20% of root causes driving 80% of business impact."
+        ],
+        tasks: [
+          { text: "Deconstruct a business profit drop problem into a 3-level MECE tree", done: false },
+          { text: "Create an issue tree visualization in Miro or PPT slide format", done: false },
+          { text: "Draft hypothesis questions for each branch of the tree", done: false }
+        ]
+      },
+      {
+        id: "w2", week: "Week 2", phase: 1,
+        phaseName: "PHASE 1 · Consulting Foundations",
+        title: "Pyramid Principle - Structured Communication", tools: "PowerPoint",
+        objectives: "Deliver top-down, answer-first executive messaging. Write action-oriented slide headers that C-suite executives can synthesize in seconds.",
+        badgeClass: "badge-p1",
+        concepts: [
+          "Minto Pyramid Principle: Lead with the recommendation, group arguments into 3 supporting buckets.",
+          "SCQA Framework: Situation -> Complication -> Question -> Answer.",
+          "Horizontal & Vertical Slide Flow: Slide headlines tell the complete story alone."
+        ],
+        tasks: [
+          { text: "Convert a 10-slide report into a 3-slide executive decision deck", done: false },
+          { text: "Draft an SCQA intro slide for a strategic initiative", done: false },
+          { text: "Conduct an elevator pitch test: Deliver core recommendation in 60 seconds", done: false }
+        ]
+      },
+      {
+        id: "w3", week: "Week 3", phase: 1,
+        phaseName: "PHASE 1 · Consulting Foundations",
+        title: "Hypothesis-Driven Problem Solving", tools: "Excel",
+        objectives: "Formulate proactive hypotheses before touching data. Build validation matrices to verify or discard assumptions rapidly.",
+        badgeClass: "badge-p1",
+        concepts: [
+          "Hypothesis Matrix: Hypothesis statement -> Required Data Source -> Metric -> Decision rule.",
+          "Avoid 'Boil the Ocean' paralysis: Only pull data required to prove or disprove hypotheses.",
+          "Sensitivity & Scenario modeling (Base case, Bull case, Bear case)."
+        ],
+        tasks: [
+          { text: "Build a hypothesis testing matrix in Excel with 4 distinct hypotheses", done: false },
+          { text: "Run sensitivity scenario modeling on unit economics using Excel Data Tables", done: false },
+          { text: "Document disproven hypotheses as valuable guardrails for stakeholders", done: false }
+        ]
+      },
+      {
+        id: "w4", week: "Week 4", phase: 1,
+        phaseName: "PHASE 1 · Consulting Foundations",
+        title: "Case Frameworks (Profitability, Market Entry) + Practice", tools: "Excel / PPT",
+        objectives: "Apply consulting frameworks to standard business scenarios: Profitability breakdown, Market Entry sizing, and M&A evaluation.",
+        badgeClass: "badge-p1",
+        concepts: [
+          "Profitability Framework: Revenue decomposition vs Cost decomposition (Fixed, Variable).",
+          "Market Sizing: Top-down TAM calculation vs Bottom-up unit capacity modeling.",
+          "Market Entry: Attractiveness, competitive landscape, capability fit, financial feasibility."
+        ],
+        tasks: [
+          { text: "Solve a full profitability business case from raw numbers to slide recommendation", done: false },
+          { text: "Complete a bottom-up market sizing exercise for a new SaaS product launch", done: false },
+          { text: "Conduct a mock case presentation with timer and Q&A defense", done: false }
+        ]
+      },
+      {
+        id: "w5_6", week: "Week 5-6", phase: 2,
+        phaseName: "PHASE 2 · Data Foundations & BI",
+        title: "Advanced SQL: Window Functions, CTEs, Optimization", tools: "Snowflake / BigQuery / SQL Server",
+        objectives: "Master enterprise analytics SQL: Multi-CTE pipelines, analytical window functions, query plans, partitioning, and execution cost optimization.",
+        badgeClass: "badge-p2",
+        concepts: [
+          "Window Functions: ROW_NUMBER(), DENSE_RANK(), NTILE(4), LAG/LEAD with custom frames.",
+          "Frame Clauses: ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW vs RANGE.",
+          "Execution Tuning: Reading query profiles, pruning partitions, avoiding Cartesian fans in JOINs."
+        ],
+        tasks: [
+          { text: "Write running total and 30-day moving average queries with sliding window frames", done: false },
+          { text: "Build a multi-level CTE to identify repeat buyer conversion velocity", done: false },
+          { text: "Inspect execution plan / explain plan and optimize a slow query by 50%+", done: false }
+        ]
+      },
+      {
+        id: "w7", week: "Week 7", phase: 2,
+        phaseName: "PHASE 2 · Data Foundations & BI",
+        title: "Advanced Excel: Power Query, SUMIFS, Dynamic Dashboards", tools: "Excel",
+        objectives: "Build automated, resilient financial & operational models in Excel using Power Query ETL and dynamic array formulas.",
+        badgeClass: "badge-p2",
+        concepts: [
+          "Power Query (M): Unpivoting, merging queries, handling changing schemas and automated folder ingestion.",
+          "Dynamic Arrays: FILTER(), UNIQUE(), SORT(), XLOOKUP() replacing brittle VLOOKUPs.",
+          "Executive UI in Excel: Number formatting, dynamic chart ranges, zero hardcoded magic numbers."
+        ],
+        tasks: [
+          { text: "Automate a multi-file monthly sales consolidation pipeline using Power Query", done: false },
+          { text: "Construct an executive KPI dashboard using dynamic array formulas and slicers", done: false },
+          { text: "Implement defensive spreadsheet design (input validation, error checking flags)", done: false }
+        ]
+      },
+      {
+        id: "w8_9", week: "Week 8-9", phase: 2,
+        phaseName: "PHASE 2 · Data Foundations & BI",
+        title: "BI Dashboarding: Data Modeling, DAX / Calculated Fields", tools: "Power BI or Tableau",
+        objectives: "Architect scalable BI semantic models using Star Schema principles and robust analytical calculations (DAX / LOD).",
+        badgeClass: "badge-p2",
+        concepts: [
+          "Dimensional Modeling: Star schema vs Snowflake schema. Single-direction 1-to-many relationships.",
+          "DAX Mastery: CALCULATE(), FILTER(), ALL(), KEEPFILTERS(), Time Intelligence (YTD, SAMEPERIODLASTYEAR).",
+          "Tableau alternative: FIXED, INCLUDE, EXCLUDE Level of Detail (LOD) expressions."
+        ],
+        tasks: [
+          { text: "Model a Fact table with 3 Dimensions (Date, Customer, Product) with no bi-directional filtering", done: false },
+          { text: "Write DAX measures for YoY Growth %, YTD Revenue, and 90-day Customer Rolling Spend", done: false },
+          { text: "Design an executive dashboard following UI hierarchy and high data-to-ink ratio", done: false }
+        ]
+      },
+      {
+        id: "w10", week: "Week 10", phase: 2,
+        phaseName: "PHASE 2 · Data Foundations & BI",
+        title: "Cohort Analysis (Retention, Behavior Trends)", tools: "SQL + Excel / Power BI",
+        objectives: "Quantify customer lifetime behavior, retention decay curves, and churn patterns segmented by acquisition periods.",
+        badgeClass: "badge-p2",
+        concepts: [
+          "Cohort Indexing: Calculating Month-0, Month-1, ... Month-N retention offsets.",
+          "Retention Heatmaps: Triangle retention matrices in Excel/Power BI.",
+          "LTV & Payback Period: Estimating Customer Acquisition Cost (CAC) recovery curves."
+        ],
+        tasks: [
+          { text: "Write the SQL cohort generation query using MIN(order_date) and DATEDIFF", done: false },
+          { text: "Build an interactive retention cohort heatmap in Power BI or Excel", done: false },
+          { text: "Analyze drop-off inflection points and draft 3 tactical retention recommendations", done: false }
+        ]
+      },
+      {
+        id: "w11", week: "Week 11", phase: 3,
+        phaseName: "PHASE 3 · Statistics & Python",
+        title: "Descriptive Stats & Probability Basics", tools: "Excel / Python",
+        objectives: "Establish rigorous statistical foundations: distributions, measures of dispersion, and probability rules.",
+        badgeClass: "badge-p3",
+        concepts: [
+          "Distributions: Normal, Log-normal, Binomial, Poisson, and heavy-tailed business metrics.",
+          "Dispersion & Outliers: Variance, Standard Deviation, IQR, Z-scores, Box plots.",
+          "Bayes Theorem: Prior probability, Likelihood, and Posterior update in business decisions."
+        ],
+        tasks: [
+          { text: "Calculate skewness, kurtosis, and outlier boundaries for transactional datasets", done: false },
+          { text: "Implement Bayes rule calculations for marketing conversion probability", done: false },
+          { text: "Plot and compare empirical distributions against theoretical normal curves", done: false }
+        ]
+      },
+      {
+        id: "w12", week: "Week 12", phase: 3,
+        phaseName: "PHASE 3 · Statistics & Python",
+        title: "Inferential Stats: Hypothesis Testing, p-values, CI", tools: "Python (SciPy)",
+        objectives: "Run statistical hypothesis tests with confidence intervals to separate real business signals from noise.",
+        badgeClass: "badge-p3",
+        concepts: [
+          "Central Limit Theorem: Why sample means approximate normality regardless of population distribution.",
+          "Test Selection: Two-sample t-test (Welch's t-test), Paired t-test, ANOVA, Chi-Square test of independence.",
+          "Decision Risks: Type I error (alpha / false positive) vs Type II error (beta / false negative)."
+        ],
+        tasks: [
+          { text: "Perform two-sample Welch's t-test on pricing test data using scipy.stats", done: false },
+          { text: "Calculate 95% confidence intervals for conversion rate differences", done: false },
+          { text: "Run a Chi-Square contingency table test on customer churn across subscription tiers", done: false }
+        ]
+      },
+      {
+        id: "w13", week: "Week 13", phase: 3,
+        phaseName: "PHASE 3 · Statistics & Python",
+        title: "A/B Testing: Design, Sample Size, Analysis", tools: "Python",
+        objectives: "End-to-end experimentation: Power calculations, Minimum Detectable Effect (MDE), sample sizing, and avoiding p-hacking.",
+        badgeClass: "badge-p3",
+        concepts: [
+          "Sample Size Determination: Statistical Power (1-beta = 0.80), Significance level (alpha = 0.05), and MDE.",
+          "Pitfalls: Peeking bias / early stopping, sample ratio mismatch (SRM), Simpson's Paradox.",
+          "Guardrail metrics vs Primary evaluation metrics in experimentation."
+        ],
+        tasks: [
+          { text: "Calculate required sample size for an A/B test with 2% baseline and 10% relative lift", done: false },
+          { text: "Build a Chi-Square test script to detect Sample Ratio Mismatch (SRM)", done: false },
+          { text: "Draft an A/B test launch and decision brief for executive approval", done: false }
+        ]
+      },
+      {
+        id: "w14", week: "Week 14", phase: 3,
+        phaseName: "PHASE 3 · Statistics & Python",
+        title: "RFM & Customer Segmentation", tools: "Python (Pandas)",
+        objectives: "Segment customer base using Recency, Frequency, and Monetary scoring to drive personalized business campaigns.",
+        badgeClass: "badge-p3",
+        concepts: [
+          "RFM Scoring: Quintile binning (pd.qcut) for R, F, M metrics.",
+          "Customer Tier Mapping: Champions, Loyalists, Potential Loyalists, At-Risk, Hibernating, Lost.",
+          "Actionable Strategies: Re-engagement cadences and VIP retention incentives."
+        ],
+        tasks: [
+          { text: "Compute RFM raw metrics from transaction logs using Pandas groupby", done: false },
+          { text: "Assign quintile scores 1-5 and segment into 8 defined customer personas", done: false },
+          { text: "Create visualization showing revenue contribution per RFM tier", done: false }
+        ]
+      },
+      {
+        id: "w15_16", week: "Week 15-16", phase: 3,
+        phaseName: "PHASE 3 · Statistics & Python",
+        title: "Python for Data Analysis: Pandas, NumPy, Visuals", tools: "Python / Jupyter",
+        objectives: "Write production-grade exploratory and data manipulation scripts with Pandas, NumPy, Matplotlib, and Seaborn.",
+        badgeClass: "badge-p3",
+        concepts: [
+          "Pandas Deep Dive: MultiIndex, melt(), pivot_table(), vectorized string/datetime methods.",
+          "NumPy: Broadcasting, masking, vectorized conditional logic (np.select, np.where).",
+          "Visual Storytelling: Publication-grade styling, custom color palettes, direct data labelling."
+        ],
+        tasks: [
+          { text: "Complete an end-to-end Exploratory Data Analysis (EDA) notebook on 100k+ rows", done: false },
+          { text: "Create high-impact chart visuals with Seaborn & Matplotlib annotated for executives", done: false },
+          { text: "Package modular cleaning functions into reusable Python scripts", done: false }
+        ]
+      },
+      {
+        id: "w17_18", week: "Week 17-18", phase: 4,
+        phaseName: "PHASE 4 · Advanced Analytics & Capstone",
+        title: "Regression & Forecasting (Linear, Time Series)", tools: "Python (statsmodels)",
+        objectives: "Build statistical forecasting and regression models. Diagnose multicollinearity, autocorrelation, and seasonality.",
+        badgeClass: "badge-p4",
+        concepts: [
+          "OLS Diagnostics: R-squared, Adjusted R-squared, p-values, Residual normality, VIF & multicollinearity.",
+          "Time Series Decomposition: Trend, Seasonality, Residual components.",
+          "Forecasting Models: Exponential Smoothing (Holt-Winters), ARIMA/SARIMA concepts."
+        ],
+        tasks: [
+          { text: "Fit an OLS multiple regression and interpret coefficient elasticity for business levers", done: false },
+          { text: "Decompose a 3-year revenue time series into seasonal and trend components", done: false },
+          { text: "Build a 12-month forward forecast with 95% confidence intervals", done: false }
+        ]
+      },
+      {
+        id: "w19", week: "Week 19", phase: 4,
+        phaseName: "PHASE 4 · Advanced Analytics & Capstone",
+        title: "Intro to ML Basics: Classification / Clustering", tools: "Python (scikit-learn)",
+        objectives: "Understand practical machine learning techniques for business prediction: Customer churn prediction and K-Means clustering.",
+        badgeClass: "badge-p4",
+        concepts: [
+          "Supervised Classification: Logistic Regression, Decision Trees / Random Forests, Train/Test split.",
+          "Model Evaluation: Confusion Matrix, Precision, Recall, F1-score, ROC-AUC (business trade-offs).",
+          "Unsupervised Clustering: K-Means, Elbow method, Silhouette score for customer persona discovery."
+        ],
+        tasks: [
+          { text: "Train a customer churn prediction classifier in scikit-learn", done: false },
+          { text: "Generate Feature Importance chart to show which factors drive churn the most", done: false },
+          { text: "Tune classification threshold based on cost of false positive vs false negative", done: false }
+        ]
+      },
+      {
+        id: "w20", week: "Week 20", phase: 4,
+        phaseName: "PHASE 4 · Advanced Analytics & Capstone",
+        title: "Data Storytelling & Executive Communication", tools: "PPT + Tableau / Power BI",
+        objectives: "Synthesize complex models into clean, narrative-driven board recommendations. Bridge the technical-to-executive gap.",
+        badgeClass: "badge-p4",
+        concepts: [
+          "Lead/Architect Mindset: Translating p-values and model accuracy into dollar revenue and risk reduction.",
+          "The 'So What?' Test: Every chart must state the business implication and recommended action.",
+          "Handling executive challenge: Defending assumptions, data lineage, and model boundaries under fire."
+        ],
+        tasks: [
+          { text: "Create an executive 1-page dashboard with clear hierarchy and callout commentary", done: false },
+          { text: "Draft a 5-slide C-suite presentation translating regression output into strategic initiatives", done: false },
+          { text: "Record or deliver a 5-minute verbal walkthrough of recommendations", done: false }
+        ]
+      },
+      {
+        id: "w21", week: "Week 21", phase: 4,
+        phaseName: "PHASE 4 · Advanced Analytics & Capstone",
+        title: "Capstone: End-to-End Case (Problem to Recommendation)", tools: "SQL + Python + PPT",
+        objectives: "Execute a full-scale architect-grade capstone: From ambiguous client problem to SQL data ingestion, statistical modeling, and board deck.",
+        badgeClass: "badge-p4",
+        concepts: [
+          "Full Lifecycle Integration: MECE issue tree -> Data extraction -> Analytics/ML -> Executive recommendations.",
+          "Code Quality & Governance: Clean Git commit history, well-documented queries, reproduceable notebooks.",
+          "Measurable ROI: Quantifying projected bottom-line or top-line impact of recommendations."
+        ],
+        tasks: [
+          { text: "Draft project charter & MECE hypothesis tree for the capstone scenario", done: false },
+          { text: "Execute SQL queries & Python modeling notebooks with complete comments", done: false },
+          { text: "Produce final executive slide deck (Pyramid Principle compliant)", done: false }
+        ]
+      },
+      {
+        id: "w22", week: "Week 22", phase: 4,
+        phaseName: "PHASE 4 · Advanced Analytics & Capstone",
+        title: "Portfolio Build & Interview Prep", tools: "PPT / GitHub / LinkedIn",
+        objectives: "Package your capstone and weekly deliverables into a portfolio. Prepare for Lead, SME, and Associate Architect behavioral and case interviews.",
+        badgeClass: "badge-p4",
+        concepts: [
+          "Architect Portfolio: Highlighting system thinking, business acumen, and technical depth.",
+          "STAR Technique: Situation, Task, Action, Result structured interview responses.",
+          "Leadership Positioning: Demonstrating mentorship, technical governance, and cross-functional alignment."
+        ],
+        tasks: [
+          { text: "Publish GitHub repository with clean README, architecture diagrams, and notebook samples", done: false },
+          { text: "Update LinkedIn / CV with Lead / SME strategic achievements and capstone metrics", done: false },
+          { text: "Practice 5 Lead-level case interview questions (e.g. data platform architecture & strategy)", done: false }
+        ]
+      }
+    ];
+
+    // --- STRATEGIC MIND MAP PILLARS ---
+    const MINDMAP_DOMAINS = [
+      {
+        id: "tech_tools", title: "Technical Tool Mastery", icon: "⚡",
+        skills: [
+          { name: "Advanced Excel (Power Query, Dynamic Arrays, Financial Models)", level: "Intermediate" },
+          { name: "Power BI / Tableau (Star Schema, DAX Time Intelligence, LOD)", level: "Intermediate" },
+          { name: "Python for Analytics (Pandas, NumPy, SciPy, Matplotlib)", level: "Practitioner" },
+          { name: "Data Preparation & Wrangling (Schema validation, ETL pipelines)", level: "Competent" }
+        ]
+      },
+      {
+        id: "git_devops", title: "Git and DevOps", icon: "🌿",
+        skills: [
+          { name: "GitHub / GitLab repository governance & branching strategy", level: "Competent" },
+          { name: "Git for Data Analysis (Reproducible notebooks, dvc, commit hygiene)", level: "Competent" },
+          { name: "Version Control in Azure DevOps & VS Code environments", level: "Practitioner" },
+          { name: "CI/CD Implementation (Automated linting, SQL checks, deployment)", level: "Novice" }
+        ]
+      },
+      {
+        id: "analytics_stats", title: "Analytics and Statistics", icon: "📊",
+        skills: [
+          { name: "Descriptive & Inferential Statistics (Distributions, CLT, CI)", level: "Competent" },
+          { name: "Hypothesis Testing & A/B Experimentation Design", level: "Competent" },
+          { name: "Predictive Modeling & Regression (OLS, Time Series)", level: "Practitioner" },
+          { name: "Cohort Analysis & Customer Lifetime Value (LTV/CAC)", level: "Competent" }
+        ]
+      },
+      {
+        id: "frameworks_methodology", title: "Frameworks and Methodology", icon: "🏛️",
+        skills: [
+          { name: "Consulting Frameworks (MECE, Issue Trees, Pyramid Principle)", level: "Competent" },
+          { name: "Agile Project Delivery (Kanban vs Scrum, Sprints, Backlogs)", level: "Competent" },
+          { name: "SOP Development & Enterprise Data Governance Standards", level: "Practitioner" },
+          { name: "Testing, Data Quality Assertion, & Test Cases", level: "Practitioner" }
+        ]
+      },
+      {
+        id: "ai_automation", title: "AI and Automation", icon: "🤖",
+        skills: [
+          { name: "AI Integration in Daily Data Workflows & LLM Prompts", level: "Practitioner" },
+          { name: "Daily Task Planning & Autonomous AI Agents", level: "Novice" },
+          { name: "n8n & Workflow Automation", level: "Novice" },
+          { name: "Azure Data Factory & Microsoft Fabric (Data lakehouse)", level: "Novice" }
+        ]
+      },
+      {
+        id: "personal_strategic", title: "Personal, Financial & Strategic", icon: "🎯",
+        skills: [
+          { name: "Executive Storytelling & C-Suite Board Presentations", level: "Competent" },
+          { name: "Career Milestone & Promotion Roadmapping (Lead / SME / Architect)", level: "Practitioner" },
+          { name: "Financial Planning & Personal Asset Allocation", level: "Practitioner" },
+          { name: "Mentorship & Junior Analyst Upskilling Leadership", level: "Competent" }
+        ]
+      }
+    ];
+
+    // --- APPLICATION PERSISTED STATE ---
+    const STORAGE_KEY = "strategic_upskill_tracker_state_v2";
+
+    let appState = {
+      theme: 'dark', // 'dark' | 'light'
+      customModules: [], // user-added modules
+      weeks: {}, // { [weekId]: { status, customTasks: [{text, done}], baseTasksDone: [bool], notes } }
+      competencies: {},
+      meceNotes: { s: "", c: "", q: "", a: "", b1_t: "Pillar 1: Revenue Drivers", b1_b: "", b2_t: "Pillar 2: Cost Optimization", b2_b: "", b3_t: "Pillar 3: Retention & Churn", b3_b: "" },
+      pomodoro: { count: 0, secondsWorked: 0 },
+      currentPhaseFilter: 'ALL',
+      activeModalWeekId: null
+    };
+
+    function getAllModules() {
+      return [...BASE_ROADMAP_DATA, ...(appState.customModules || [])];
+    }
+
+    function initAppState() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          appState = { ...appState, ...parsed };
+        } catch (e) {
+          console.error("Could not parse saved state", e);
+        }
+      }
+
+      // Ensure every base module has state
+      BASE_ROADMAP_DATA.forEach(w => {
+        if (!appState.weeks[w.id]) {
+          appState.weeks[w.id] = {
+            status: "TODO",
+            baseTasksDone: new Array(w.tasks.length).fill(false),
+            customTasks: [],
+            notes: ""
+          };
+        } else {
+          if (!appState.weeks[w.id].customTasks) appState.weeks[w.id].customTasks = [];
+          if (!appState.weeks[w.id].baseTasksDone) appState.weeks[w.id].baseTasksDone = new Array(w.tasks.length).fill(false);
+        }
+      });
+
+      // Apply theme
+      applyTheme(appState.theme || 'dark');
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      updateHUD();
+    }
+
+    // --- THEME SWITCHER (TRUE OLED DARK VS CRISP LIGHT) ---
+    function toggleTheme() {
+      const newTheme = (appState.theme === 'dark') ? 'light' : 'dark';
+      appState.theme = newTheme;
+      applyTheme(newTheme);
+      saveState();
+    }
+
+    function applyTheme(theme) {
+      const html = document.documentElement;
+      const themeIcon = document.getElementById("themeIcon");
+      const themeLabel = document.getElementById("themeLabel");
+      const metaTheme = document.getElementById("meta-theme-color");
+
+      if (theme === 'dark') {
+        html.classList.add('dark');
+        if (themeIcon) themeIcon.innerText = "☀️";
+        if (themeLabel) themeLabel.innerText = "Light Mode";
+        if (metaTheme) metaTheme.setAttribute("content", "#000000");
+      } else {
+        html.classList.remove('dark');
+        if (themeIcon) themeIcon.innerText = "🌙";
+        if (themeLabel) themeLabel.innerText = "Dark Mode";
+        if (metaTheme) metaTheme.setAttribute("content", "#f8fafc");
+      }
+    }
+
+    // --- ROADMAP RENDERING ---
+    function renderRoadmap() {
+      const container = document.getElementById("weeksContainer");
+      if (!container) return;
+
+      const statusFilter = document.getElementById("statusFilter").value;
+      const searchQuery = (document.getElementById("searchInput").value || "").toLowerCase();
+      const allModules = getAllModules();
+
+      container.innerHTML = "";
+
+      allModules.forEach((w) => {
+        if (appState.currentPhaseFilter !== 'ALL' && w.phase !== Number(appState.currentPhaseFilter)) {
+          return;
+        }
+
+        const weekState = appState.weeks[w.id] || { status: 'TODO', baseTasksDone: [], customTasks: [], notes: '' };
+
+        if (statusFilter !== 'ALL' && weekState.status !== statusFilter) {
+          return;
+        }
+
+        const searchTarget = (w.title + " " + w.tools + " " + (w.objectives || "") + " " + w.week).toLowerCase();
+        if (searchQuery && !searchTarget.includes(searchQuery)) {
+          return;
+        }
+
+        // Calculate combined task completion
+        const baseDone = (weekState.baseTasksDone || []).filter(Boolean).length;
+        const customDone = (weekState.customTasks || []).filter(t => t.done).length;
+        const totalCompleted = baseDone + customDone;
+        const totalTasks = (w.tasks?.length || 0) + (weekState.customTasks?.length || 0);
+        const percentTasks = totalTasks > 0 ? Math.round((totalCompleted / totalTasks) * 100) : 0;
+
+        let statusClass = "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300";
+        if (weekState.status === "COMPLETED") statusClass = "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30";
+        if (weekState.status === "IN_PROGRESS") statusClass = "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/30";
+
+        const card = document.createElement("div");
+        card.className = "bg-white dark:bg-cardDark p-4 sm:p-5 rounded-2xl border border-zinc-200 dark:border-borderDark hover:border-zinc-400 dark:hover:border-zinc-700 transition flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-sm";
+
+        card.innerHTML = `
+          <div class="flex-1 w-full">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+              <span class="px-2 py-0.5 rounded-full text-[11px] font-semibold ${w.badgeClass || 'badge-custom'}">${w.week}</span>
+              <span class="text-xs text-zinc-500 dark:text-zinc-400">${w.phaseName}</span>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-md ${statusClass}">${formatStatus(weekState.status)}</span>
+              ${w.isCustom ? `<span class="text-[10px] bg-pink-500/10 text-pink-500 border border-pink-500/30 px-1.5 py-0.2 rounded">Custom</span>` : ''}
+            </div>
+            <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white hover:text-blue-500 cursor-pointer transition" onclick="openWeekModal('${w.id}')">${w.title}</h3>
+            <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">${w.objectives || ''}</p>
+            <div class="flex flex-wrap items-center gap-2.5 mt-2">
+              <span class="text-[11px] text-blue-600 dark:text-blue-400 font-mono bg-blue-50 dark:bg-subDark px-2 py-0.5 rounded border border-blue-200 dark:border-borderDark">🛠️ ${w.tools || 'General'}</span>
+              <span class="text-[11px] text-zinc-500 dark:text-zinc-400">✅ ${totalCompleted}/${totalTasks} deliverables (${percentTasks}%)</span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 w-full md:w-auto justify-end pt-2 md:pt-0 border-t md:border-t-0 border-zinc-100 dark:border-zinc-800">
+            <select onchange="updateWeekStatus('${w.id}', this.value)" class="bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-lg px-2 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none">
+              <option value="TODO" ${weekState.status === 'TODO' ? 'selected' : ''}>To Do</option>
+              <option value="IN_PROGRESS" ${weekState.status === 'IN_PROGRESS' ? 'selected' : ''}>In Progress</option>
+              <option value="COMPLETED" ${weekState.status === 'COMPLETED' ? 'selected' : ''}>Completed</option>
+            </select>
+            <button onclick="openWeekModal('${w.id}')" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white transition flex items-center gap-1">
+              Details & Tasks
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function formatStatus(status) {
+      if (status === 'COMPLETED') return 'Completed';
+      if (status === 'IN_PROGRESS') return 'In Progress';
+      return 'Not Started';
+    }
+
+    function setPhaseFilter(phase) {
+      appState.currentPhaseFilter = phase;
+      ['ALL', 1, 2, 3, 4].forEach(p => {
+        const btn = document.getElementById(`filter-phase-${p}`);
+        if (!btn) return;
+        if (p === phase) {
+          btn.className = "px-2.5 py-1.5 rounded-lg font-semibold bg-blue-600 text-white flex-shrink-0";
+        } else {
+          btn.className = "px-2.5 py-1.5 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0";
+        }
+      });
+      renderRoadmap();
+    }
+
+    function updateWeekStatus(weekId, newStatus) {
+      if (!appState.weeks[weekId]) return;
+      appState.weeks[weekId].status = newStatus;
+      if (newStatus === "COMPLETED") {
+        const mod = getAllModules().find(w => w.id === weekId);
+        if (mod && mod.tasks) {
+          appState.weeks[weekId].baseTasksDone = new Array(mod.tasks.length).fill(true);
+        }
+        if (appState.weeks[weekId].customTasks) {
+          appState.weeks[weekId].customTasks.forEach(t => t.done = true);
+        }
+      }
+      saveState();
+      renderRoadmap();
+    }
+
+    // --- MODAL: TASKS & EXTENSIBILITY ---
+    function openWeekModal(weekId) {
+      const week = getAllModules().find(w => w.id === weekId);
+      if (!week) return;
+
+      appState.activeModalWeekId = weekId;
+      const weekState = appState.weeks[weekId] || { status: 'TODO', baseTasksDone: [], customTasks: [], notes: '' };
+
+      document.getElementById("modalWeekBadge").innerText = week.week;
+      document.getElementById("modalWeekBadge").className = `px-2 py-0.5 rounded text-xs font-semibold ${week.badgeClass || 'badge-custom'}`;
+      document.getElementById("modalPhaseBadge").innerText = week.phaseName;
+      document.getElementById("modalWeekTitle").innerText = week.title;
+      document.getElementById("modalWeekTools").innerText = `Tools: ${week.tools || 'General'}`;
+      document.getElementById("modalObjectives").innerText = week.objectives || 'No objectives specified.';
+
+      // Concepts
+      const conceptsDiv = document.getElementById("modalKeyConcepts");
+      if (week.concepts && week.concepts.length > 0) {
+        conceptsDiv.innerHTML = week.concepts.map(c => `<div>• ${c}</div>`).join("");
+      } else {
+        conceptsDiv.innerHTML = "<div>• Customized executive competencies.</div>";
+      }
+
+      renderModalTasks(week, weekState);
+
+      // Notes
+      document.getElementById("modalNotes").value = weekState.notes || "";
+      document.getElementById("newCustomTaskInput").value = "";
+
+      document.getElementById("weekModal").classList.remove("hidden");
+    }
+
+    function renderModalTasks(week, weekState) {
+      const tasksDiv = document.getElementById("modalTasksList");
+      tasksDiv.innerHTML = "";
+
+      let completedCount = 0;
+      let totalCount = 0;
+
+      // Base tasks
+      if (week.tasks) {
+        week.tasks.forEach((task, idx) => {
+          totalCount++;
+          const isDone = weekState.baseTasksDone ? weekState.baseTasksDone[idx] : false;
+          if (isDone) completedCount++;
+
+          const row = document.createElement("div");
+          row.className = "flex items-start justify-between gap-2 p-1.5 rounded-lg hover:bg-zinc-200/50 dark:hover:bg-zinc-800/50 transition";
+          row.innerHTML = `
+            <label class="flex items-start gap-2 cursor-pointer flex-1">
+              <input type="checkbox" onchange="toggleBaseTask('${week.id}', ${idx}, this.checked)" ${isDone ? 'checked' : ''} class="mt-0.5 rounded text-blue-600 focus:ring-0">
+              <span class="${isDone ? 'line-through text-zinc-400' : 'text-zinc-800 dark:text-zinc-200'}">${task.text}</span>
+            </label>
+          `;
+          tasksDiv.appendChild(row);
+        });
+      }
+
+      // Custom user-added tasks
+      if (weekState.customTasks) {
+        weekState.customTasks.forEach((cTask, cIdx) => {
+          totalCount++;
+          if (cTask.done) completedCount++;
+
+          const row = document.createElement("div");
+          row.className = "flex items-start justify-between gap-2 p-1.5 rounded-lg bg-pink-500/5 dark:bg-pink-500/10 border border-pink-500/20";
+          row.innerHTML = `
+            <label class="flex items-start gap-2 cursor-pointer flex-1">
+              <input type="checkbox" onchange="toggleCustomTask('${week.id}', ${cIdx}, this.checked)" ${cTask.done ? 'checked' : ''} class="mt-0.5 rounded text-pink-600 focus:ring-0">
+              <span class="${cTask.done ? 'line-through text-zinc-400' : 'text-zinc-800 dark:text-zinc-200'}">${cTask.text}</span>
+            </label>
+            <button onclick="deleteCustomTask('${week.id}', ${cIdx})" class="text-zinc-400 hover:text-red-500 p-0.5 transition" title="Delete custom task">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
+          `;
+          tasksDiv.appendChild(row);
+        });
+      }
+
+      document.getElementById("modalTasksCount").innerText = `${completedCount} of ${totalCount} completed`;
+    }
+
+    function toggleBaseTask(weekId, idx, checked) {
+      if (!appState.weeks[weekId]) return;
+      if (!appState.weeks[weekId].baseTasksDone) appState.weeks[weekId].baseTasksDone = [];
+      appState.weeks[weekId].baseTasksDone[idx] = checked;
+      checkAutoCompletion(weekId);
+      saveState();
+      const week = getAllModules().find(w => w.id === weekId);
+      renderModalTasks(week, appState.weeks[weekId]);
+    }
+
+    function toggleCustomTask(weekId, idx, checked) {
+      if (!appState.weeks[weekId]?.customTasks) return;
+      appState.weeks[weekId].customTasks[idx].done = checked;
+      checkAutoCompletion(weekId);
+      saveState();
+      const week = getAllModules().find(w => w.id === weekId);
+      renderModalTasks(week, appState.weeks[weekId]);
+    }
+
+    function deleteCustomTask(weekId, idx) {
+      if (!appState.weeks[weekId]?.customTasks) return;
+      appState.weeks[weekId].customTasks.splice(idx, 1);
+      saveState();
+      const week = getAllModules().find(w => w.id === weekId);
+      renderModalTasks(week, appState.weeks[weekId]);
+    }
+
+    function addCustomTaskToCurrentWeek() {
+      const input = document.getElementById("newCustomTaskInput");
+      const text = input.value.trim();
+      if (!text || !appState.activeModalWeekId) return;
+
+      const weekId = appState.activeModalWeekId;
+      if (!appState.weeks[weekId].customTasks) {
+        appState.weeks[weekId].customTasks = [];
+      }
+      appState.weeks[weekId].customTasks.push({ text: text, done: false });
+      input.value = "";
+      saveState();
+
+      const week = getAllModules().find(w => w.id === weekId);
+      renderModalTasks(week, appState.weeks[weekId]);
+    }
+
+    function checkAutoCompletion(weekId) {
+      const week = getAllModules().find(w => w.id === weekId);
+      const wState = appState.weeks[weekId];
+      if (!week || !wState) return;
+
+      const baseAll = (week.tasks || []).length === 0 || (wState.baseTasksDone || []).every(Boolean);
+      const customAll = (wState.customTasks || []).length === 0 || (wState.customTasks || []).every(t => t.done);
+
+      if (baseAll && customAll) {
+        wState.status = 'COMPLETED';
+      } else if (wState.status === 'COMPLETED') {
+        wState.status = 'IN_PROGRESS';
+      }
+    }
+
+    function closeWeekModal() {
+      document.getElementById("weekModal").classList.add("hidden");
+      appState.activeModalWeekId = null;
+      renderRoadmap();
+    }
+
+    function saveCurrentWeekNotes() {
+      if (!appState.activeModalWeekId) return;
+      appState.weeks[appState.activeModalWeekId].notes = document.getElementById("modalNotes").value;
+      saveState();
+    }
+
+    // --- ADD CUSTOM MODULE MODAL ---
+    function openAddModuleModal() {
+      document.getElementById("newModTitle").value = "";
+      document.getElementById("newModTools").value = "";
+      document.getElementById("newModObjectives").value = "";
+      document.getElementById("newModTasks").value = "";
+      document.getElementById("addModuleModal").classList.remove("hidden");
+    }
+
+    function closeAddModuleModal() {
+      document.getElementById("addModuleModal").classList.add("hidden");
+    }
+
+    function saveNewModule() {
+      const title = document.getElementById("newModTitle").value.trim();
+      if (!title) {
+        alert("Please enter a module title.");
+        return;
+      }
+      const phase = Number(document.getElementById("newModPhase").value);
+      const tools = document.getElementById("newModTools").value.trim() || "Python / SQL";
+      const objectives = document.getElementById("newModObjectives").value.trim() || "Mastery of advanced domain concepts.";
+      const rawTasks = document.getElementById("newModTasks").value.split(",").map(t => t.trim()).filter(Boolean);
+
+      const nextWeekNum = 22 + (appState.customModules?.length || 0) + 1;
+      const modId = `custom_w${Date.now()}`;
+
+      const newModule = {
+        id: modId,
+        week: `Week ${nextWeekNum}`,
+        phase: phase,
+        phaseName: `PHASE ${phase} · Custom Sprint`,
+        title: title,
+        tools: tools,
+        objectives: objectives,
+        badgeClass: "badge-custom",
+        isCustom: true,
+        tasks: rawTasks.map(t => ({ text: t, done: false })),
+        concepts: ["Custom strategic deliverable", "Executive architecture standards"]
+      };
+
+      if (!appState.customModules) appState.customModules = [];
+      appState.customModules.push(newModule);
+
+      appState.weeks[modId] = {
+        status: "TODO",
+        baseTasksDone: new Array(newModule.tasks.length).fill(false),
+        customTasks: [],
+        notes: ""
+      };
+
+      saveState();
+      closeAddModuleModal();
+      renderRoadmap();
+      updateHUD();
+    }
+
+    // --- HUD AND METRICS ENGINE ---
+    function updateHUD() {
+      const allMods = getAllModules();
+      let completedCount = 0;
+      let p1Completed = 0, p2Completed = 0, p3Completed = 0, p4Completed = 0;
+
+      allMods.forEach(w => {
+        const isDone = appState.weeks[w.id]?.status === 'COMPLETED';
+        if (isDone) {
+          completedCount++;
+          if (w.phase === 1) p1Completed++;
+          if (w.phase === 2) p2Completed++;
+          if (w.phase === 3) p3Completed++;
+          if (w.phase === 4) p4Completed++;
+        }
+      });
+
+      const totalModules = allMods.length;
+      const overallPct = totalModules > 0 ? Math.round((completedCount / totalModules) * 100) : 0;
+
+      document.getElementById("overallPercentage").innerText = `${overallPct}%`;
+      document.getElementById("overallProgressBar").style.width = `${overallPct}%`;
+      document.getElementById("completedWeeksCount").innerText = `${completedCount} of ${totalModules} modules`;
+
+      const p1Total = allMods.filter(w => w.phase === 1).length;
+      const p2Total = allMods.filter(w => w.phase === 2).length;
+      const p3Total = allMods.filter(w => w.phase === 3).length;
+      const p4Total = allMods.filter(w => w.phase === 4).length;
+
+      document.getElementById("p1Stats").innerText = `${p1Completed} / ${p1Total} Wk`;
+      document.getElementById("p1ProgressBar").style.width = p1Total ? `${Math.round((p1Completed / p1Total) * 100)}%` : '0%';
+
+      document.getElementById("p2Stats").innerText = `${p2Completed} / ${p2Total} Wk`;
+      document.getElementById("p2ProgressBar").style.width = p2Total ? `${Math.round((p2Completed / p2Total) * 100)}%` : '0%';
+
+      document.getElementById("p3Stats").innerText = `${p3Completed} / ${p3Total} Wk`;
+      document.getElementById("p3ProgressBar").style.width = p3Total ? `${Math.round((p3Completed / p3Total) * 100)}%` : '0%';
+
+      document.getElementById("p4Stats").innerText = `${p4Completed} / ${p4Total} Wk`;
+      document.getElementById("p4ProgressBar").style.width = p4Total ? `${Math.round((p4Completed / p4Total) * 100)}%` : '0%';
+    }
+
+    // --- TAB 2: COMPETENCY MIND MAP ---
+    function renderCompetencyGrid() {
+      const grid = document.getElementById("competencyGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+
+      MINDMAP_DOMAINS.forEach(dom => {
+        const card = document.createElement("div");
+        card.className = "bg-white dark:bg-cardDark p-3.5 sm:p-4 rounded-xl border border-zinc-200 dark:border-borderDark shadow-sm";
+
+        const skillRows = dom.skills.map((s, idx) => {
+          const key = `${dom.id}_${idx}`;
+          const currentLevel = appState.competencies[key] || s.level;
+
+          let badgeColor = "bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300";
+          if (currentLevel === "Competent") badgeColor = "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/30";
+          if (currentLevel === "Practitioner") badgeColor = "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/30";
+          if (currentLevel.includes("SME") || currentLevel.includes("Lead")) badgeColor = "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30";
+
+          return `
+            <div class="py-1.5 border-b border-zinc-100 dark:border-borderDark/60 last:border-b-0 flex items-center justify-between gap-2">
+              <span class="text-xs text-zinc-800 dark:text-zinc-200">${s.name}</span>
+              <button onclick="cycleSkillLevel('${key}')" class="px-2 py-0.5 text-[11px] rounded-md font-medium ${badgeColor} transition hover:scale-105" title="Tap to level up">
+                ${currentLevel}
+              </button>
+            </div>
+          `;
+        }).join("");
+
+        card.innerHTML = `
+          <div class="flex items-center gap-2 mb-2 pb-2 border-b border-zinc-100 dark:border-borderDark">
+            <span class="text-base">${dom.icon}</span>
+            <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">${dom.title}</h3>
+          </div>
+          <div>${skillRows}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function cycleSkillLevel(key) {
+      const levels = ["Novice", "Competent", "Practitioner", "SME / Lead"];
+      const current = appState.competencies[key] || "Competent";
+      let nextIndex = (levels.indexOf(current) + 1) % levels.length;
+      appState.competencies[key] = levels[nextIndex];
+      saveState();
+      renderCompetencyGrid();
+    }
+
+    // --- TAB 3: MECE / SCQA CANVAS ---
+    function loadMECEInputs() {
+      const n = appState.meceNotes || {};
+      document.getElementById("scqa-s").value = n.s || "";
+      document.getElementById("scqa-c").value = n.c || "";
+      document.getElementById("scqa-q").value = n.q || "";
+      document.getElementById("scqa-a").value = n.a || "";
+      document.getElementById("mece-b1-title").value = n.b1_t || "Pillar 1: Revenue Drivers";
+      document.getElementById("mece-b1-body").value = n.b1_b || "";
+      document.getElementById("mece-b2-title").value = n.b2_t || "Pillar 2: Cost Optimization";
+      document.getElementById("mece-b2-body").value = n.b2_b || "";
+      document.getElementById("mece-b3-title").value = n.b3_t || "Pillar 3: Retention & Churn";
+      document.getElementById("mece-b3-body").value = n.b3_b || "";
+    }
+
+    function saveMECENotes() {
+      appState.meceNotes = {
+        s: document.getElementById("scqa-s").value,
+        c: document.getElementById("scqa-c").value,
+        q: document.getElementById("scqa-q").value,
+        a: document.getElementById("scqa-a").value,
+        b1_t: document.getElementById("mece-b1-title").value,
+        b1_b: document.getElementById("mece-b1-body").value,
+        b2_t: document.getElementById("mece-b2-title").value,
+        b2_b: document.getElementById("mece-b2-body").value,
+        b3_t: document.getElementById("mece-b3-title").value,
+        b3_b: document.getElementById("mece-b3-body").value
+      };
+      saveState();
+    }
+
+    function loadMECETemplate(type) {
+      if (type === 'profitability') {
+        appState.meceNotes = {
+          s: "Global retail e-commerce client has seen EBITDA margin decline by 420 bps despite 8% GMV growth.",
+          c: "Increased promotional discounting and 3PL shipping surcharges are eroding gross profits.",
+          q: "How can leadership restore EBITDA margins to >18% within 2 quarters?",
+          a: "Re-index price tiers on top-quartile velocity SKUs and renegotiate carrier SLA volume tiers.",
+          b1_t: "Branch A: Price & Discount Governance",
+          b1_b: "- Eliminate blanket 20% cart discount codes\n- Shift promotions to bundle-only thresholds ($75+)\n- Implement dynamic pricing on elastic long-tail items",
+          b2_t: "Branch B: Logistics & Fulfillment Costs",
+          b2_b: "- Enforce regional fulfillment routing to kill cross-zone shipping\n- Consolidate packaging dims to lower dimensional weight penalty\n- Audit 3PL invoice discrepancies",
+          b3_t: "Branch C: Return Rate Reduction",
+          b3_b: "- Enhance digital sizing guide & AR previews\n- Charge return re-stocking fee on non-VIP returns\n- Ban repeat wardrobing accounts"
+        };
+      } else if (type === 'churn') {
+        appState.meceNotes = {
+          s: "Enterprise B2B Cloud Analytics platform with $120M ARR.",
+          c: "Gross logo churn rose from 0.8%/mo to 2.1%/mo in the mid-market segment over the last 180 days.",
+          q: "What actionable interventions will reverse mid-market account attrition?",
+          a: "Deploy automated early-warning telemetry on API usage drops and introduce dedicated CSM check-ins at Day 45.",
+          b1_t: "Branch 1: Product Value Realization",
+          b1_b: "- 40% of churned accounts never configured automated dashboard alerts\n- Inability to query partitioned external lakes\n- UX latency friction during peak hours",
+          b2_t: "Branch 2: Onboarding & CSM Engagement",
+          b2_b: "- Mid-market accounts receive zero proactive CSM touches after week 2\n- Lack of executive stakeholder champion mapping\n- Ineffective self-serve learning paths",
+          b3_t: "Branch 3: Competitive Pricing Pressures",
+          b3_b: "- Rival offering bundled storage pricing at 30% lower cost\n- Rigid annual contracts driving resistance at renewal\n- Overage billing surprises causing friction"
+        };
+      }
+      loadMECEInputs();
+      saveState();
+    }
+
+    function clearMECECanvas() {
+      appState.meceNotes = { s: "", c: "", q: "", a: "", b1_t: "Pillar 1", b1_b: "", b2_t: "Pillar 2", b2_b: "", b3_t: "Pillar 3", b3_b: "" };
+      loadMECEInputs();
+      saveState();
+    }
+
+    // --- TAB 5: POMODORO TIMER ---
+    let timerInterval = null;
+    let timerTotalSeconds = 25 * 60;
+    let timerRemainingSeconds = 25 * 60;
+    let isTimerRunning = false;
+
+    function toggleTimer() {
+      if (isTimerRunning) {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        document.getElementById("timerToggleBtn").innerText = "Resume Session";
+        document.getElementById("timerStatus").innerText = "Paused";
+      } else {
+        isTimerRunning = true;
+        document.getElementById("timerToggleBtn").innerText = "Pause Session";
+        document.getElementById("timerStatus").innerText = "Focusing...";
+        timerInterval = setInterval(() => {
+          if (timerRemainingSeconds > 0) {
+            timerRemainingSeconds--;
+            appState.pomodoro.secondsWorked++;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            appState.pomodoro.count++;
+            saveState();
+            alert("🎉 Great focus! Sprint complete. Take a 5-minute break.");
+            resetTimer();
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerRemainingSeconds = timerTotalSeconds;
+      document.getElementById("timerToggleBtn").innerText = "Start Focus Session";
+      document.getElementById("timerStatus").innerText = "Ready";
+      updateTimerDisplay();
+    }
+
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timerRemainingSeconds / 60);
+      const seconds = timerRemainingSeconds % 60;
+      document.getElementById("timerDisplay").innerText = 
+        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+      const circle = document.getElementById("timerCircle");
+      const perimeter = 2 * Math.PI * 44;
+      const progress = (timerTotalSeconds - timerRemainingSeconds) / timerTotalSeconds;
+      circle.style.strokeDashoffset = perimeter * (1 - progress);
+
+      document.getElementById("pomodoroCount").innerText = appState.pomodoro.count;
+      document.getElementById("pomodoroHours").innerText = (appState.pomodoro.secondsWorked / 3600).toFixed(1);
+    }
+
+    // --- TAB SWITCHER (DESKTOP & MOBILE SYNCHRONIZED) ---
+    function switchTab(tabId) {
+      const tabs = ['roadmap', 'mindmap', 'mece-builder', 'cheatsheet', 'timer'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`view-${t}`);
+        const desktopBtn = document.getElementById(`tabBtn-${t}`);
+        const mobBtn = document.getElementById(`mobTab-${t}`);
+
+        if (t === tabId) {
+          view.classList.remove('hidden');
+          if (desktopBtn) {
+            desktopBtn.className = "px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-1.5";
+          }
+          if (mobBtn) {
+            mobBtn.className = "flex flex-col items-center py-1 px-3 text-blue-600 dark:text-blue-400";
+            mobBtn.querySelector("span:last-child").className = "text-[10px] font-bold";
+          }
+        } else {
+          view.classList.add('hidden');
+          if (desktopBtn) {
+            desktopBtn.className = "px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5";
+          }
+          if (mobBtn) {
+            mobBtn.className = "flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400";
+            mobBtn.querySelector("span:last-child").className = "text-[10px] font-medium";
+          }
+        }
+      });
+
+      if (tabId === 'mindmap') renderCompetencyGrid();
+      if (tabId === 'mece-builder') loadMECEInputs();
+      if (tabId === 'timer') updateTimerDisplay();
+    }
+
+    // --- DATA BACKUP & RESTORE ---
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Upskilling_Tracker_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          appState = imported;
+          saveState();
+          applyTheme(appState.theme || 'dark');
+          renderRoadmap();
+          renderCompetencyGrid();
+          loadMECEInputs();
+          updateHUD();
+          alert("✅ Progress and custom tasks restored successfully!");
+        } catch (err) {
+          alert("❌ Invalid JSON file format.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // --- INITIALIZE ---
+    window.addEventListener("DOMContentLoaded", () => {
+      initAppState();
+      updateHUD();
+      renderRoadmap();
+      loadMECEInputs();
+      updateTimerDisplay();
+    });
+  </script>
+</body>
+</html>
