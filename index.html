@@ -37,7 +37,6 @@
   </script>
 
   <style>
-    /* Safe area padding for iPhone 15 notch / dynamic island and home indicator */
     :root {
       --sat: env(safe-area-inset-top, 0px);
       --sab: env(safe-area-inset-bottom, 0px);
@@ -54,7 +53,6 @@
     ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 9999px; }
     .dark ::-webkit-scrollbar-thumb { background: #27272a; }
 
-    /* Touch target comfort */
     button, input, select, textarea {
       touch-action: manipulation;
     }
@@ -85,20 +83,20 @@
 
       <!-- Controls: Theme Toggle & Data Actions -->
       <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
-        <!-- Theme Toggle -->
+        <!-- Theme Toggle Button -->
         <button onclick="toggleTheme()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Switch Theme">
-          <span id="themeIcon" class="text-sm">🌙</span>
-          <span class="hidden sm:inline" id="themeLabel">Dark Mode</span>
+          <span id="themeIcon" class="w-4 h-4 flex items-center justify-center"></span>
+          <span class="hidden sm:inline" id="themeLabel">Dark</span>
         </button>
 
-        <!-- Export -->
-        <button onclick="exportData()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Export JSON">
+        <!-- Export Button -->
+        <button onclick="exportData()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Export Backup JSON">
           <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           <span class="hidden md:inline">Export</span>
         </button>
 
-        <!-- Import -->
-        <button onclick="document.getElementById('importFile').click()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Import JSON">
+        <!-- Import Button -->
+        <button onclick="document.getElementById('importFile').click()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-zinc-100 hover:bg-zinc-200 dark:bg-subDark dark:hover:bg-zinc-800 border border-zinc-200 dark:border-borderDark text-zinc-700 dark:text-zinc-300 transition flex items-center gap-1.5 text-xs font-medium" title="Import Backup JSON">
           <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12"/></svg>
           <span class="hidden md:inline">Import</span>
         </button>
@@ -116,9 +114,12 @@
         <div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1.5 mt-1.5 overflow-hidden">
           <div id="overallProgressBar" class="bg-blue-600 h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
         </div>
-        <div class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 flex justify-between">
+        <div class="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 flex justify-between items-center">
           <span id="completedWeeksCount">0 of 22 modules</span>
-          <span id="streakDays">🔥 Active</span>
+          <span id="streakDays" class="flex items-center gap-1">
+            <svg class="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.316.492-.633.991-1.036 1.488-.813 1.002-1.92 1.954-2.85 3.327-.96 1.417-1.487 3.033-1.487 4.637 0 4.142 3.358 7.5 7.5 7.5 4.142 0 7.5-3.358 7.5-7.5 0-2.316-1.045-4.47-2.613-5.952-.89-.84-1.92-1.503-2.91-2.274-.633-.493-1.25-.998-1.745-1.611a6.666 6.666 0 01-.087-.1z" clip-rule="evenodd"/></svg>
+            Active
+          </span>
         </div>
       </div>
 
@@ -156,22 +157,27 @@
     </div>
   </header>
 
-  <!-- DESKTOP TOP NAV TABS (HIDDEN ON MOBILE, USES BOTTOM BAR ON IPHONE) -->
+  <!-- DESKTOP TOP NAV TABS -->
   <nav class="hidden sm:flex items-center gap-2 border-b border-zinc-200 dark:border-borderDark mb-5 text-sm overflow-x-auto pb-1">
-    <button onclick="switchTab('roadmap')" id="tabBtn-roadmap" class="px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-1.5">
-      📋 22-Week Sprint Roadmap
+    <button onclick="switchTab('roadmap')" id="tabBtn-roadmap" class="px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+      Sprint Roadmap
     </button>
-    <button onclick="switchTab('mindmap')" id="tabBtn-mindmap" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
-      🧠 Strategic Competency Matrix
+    <button onclick="switchTab('mindmap')" id="tabBtn-mindmap" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+      Competency Matrix
     </button>
-    <button onclick="switchTab('mece-builder')" id="tabBtn-mece-builder" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
-      📐 MECE & SCQA Canvas
+    <button onclick="switchTab('mece-builder')" id="tabBtn-mece-builder" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+      MECE & SCQA Canvas
     </button>
-    <button onclick="switchTab('cheatsheet')" id="tabBtn-cheatsheet" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
-      ⚡ Architect Cheat Sheet
+    <button onclick="switchTab('cheatsheet')" id="tabBtn-cheatsheet" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+      Architect Cheat Sheet
     </button>
-    <button onclick="switchTab('timer')" id="tabBtn-timer" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5">
-      ⏱️ Focus Timer
+    <button onclick="switchTab('timer')" id="tabBtn-timer" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Focus Timer
     </button>
   </nav>
 
@@ -179,7 +185,6 @@
   <section id="view-roadmap" class="space-y-4">
     <!-- FILTERS AND ACTION BAR -->
     <div class="bg-white dark:bg-cardDark p-3.5 sm:p-4 rounded-xl border border-zinc-200 dark:border-borderDark flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-      <!-- Phase Filter Pills -->
       <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
         <button onclick="setPhaseFilter('ALL')" id="filter-phase-ALL" class="px-2.5 py-1.5 rounded-lg font-semibold bg-blue-600 text-white flex-shrink-0">All</button>
         <button onclick="setPhaseFilter(1)" id="filter-phase-1" class="px-2.5 py-1.5 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">P1: Consulting</button>
@@ -198,8 +203,7 @@
 
         <input type="text" id="searchInput" oninput="renderRoadmap()" placeholder="Search topics, tools..." class="bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-lg px-2.5 py-1.5 text-xs text-zinc-800 dark:text-zinc-200 placeholder-zinc-400 focus:outline-none flex-1 sm:w-44">
 
-        <!-- Add Custom Module Button -->
-        <button onclick="openAddModuleModal()" class="px-3 py-1.5 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold hover:opacity-90 transition flex items-center gap-1 flex-shrink-0" title="Add a custom week or module">
+        <button onclick="openAddModuleModal()" class="px-3 py-1.5 rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-xs font-semibold hover:opacity-90 transition flex items-center gap-1.5 flex-shrink-0" title="Add a custom module">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
           <span class="hidden sm:inline">Add Module</span>
         </button>
@@ -207,9 +211,7 @@
     </div>
 
     <!-- WEEKS CONTAINER -->
-    <div id="weeksContainer" class="space-y-3">
-      <!-- Injected by JavaScript -->
-    </div>
+    <div id="weeksContainer" class="space-y-3"></div>
   </section>
 
   <!-- TAB 2: COMPETENCY MATRIX & MIND MAP -->
@@ -226,9 +228,7 @@
           </p>
         </div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5" id="competencyGrid">
-        <!-- Rendered by JS -->
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5" id="competencyGrid"></div>
     </div>
   </section>
 
@@ -306,7 +306,10 @@
   <section id="view-cheatsheet" class="hidden space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
-        <h3 class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2">Advanced SQL: Running Totals & Window Functions</h3>
+        <h3 class="text-xs font-bold text-blue-600 dark:text-blue-400 mb-2 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16m-5 4h5m-5 4h5"/></svg>
+          Advanced SQL: Running Totals & Window Functions
+        </h3>
         <pre class="bg-zinc-900 text-zinc-200 p-3 rounded-lg text-xs font-mono overflow-x-auto leading-relaxed">
 WITH daily_sales AS (
   SELECT order_date, SUM(revenue) AS daily_rev
@@ -321,7 +324,10 @@ FROM daily_sales;</pre>
       </div>
 
       <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
-        <h3 class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2">Power BI DAX: YoY Growth & Cohort Retention</h3>
+        <h3 class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          Power BI DAX: YoY Growth & Cohort Retention
+        </h3>
         <pre class="bg-zinc-900 text-zinc-200 p-3 rounded-lg text-xs font-mono overflow-x-auto leading-relaxed">
 Sales_YoY_Growth = 
 VAR CurrentSales = [Total_Revenue]
@@ -338,7 +344,10 @@ DIVIDE(
       </div>
 
       <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
-        <h3 class="text-xs font-bold text-amber-600 dark:text-amber-400 mb-2">Python SciPy & Statsmodels: Hypothesis Tests</h3>
+        <h3 class="text-xs font-bold text-amber-600 dark:text-amber-400 mb-2 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Python SciPy & Statsmodels: Hypothesis Tests
+        </h3>
         <pre class="bg-zinc-900 text-zinc-200 p-3 rounded-lg text-xs font-mono overflow-x-auto leading-relaxed">
 from scipy import stats
 import statsmodels.api as sm
@@ -353,7 +362,10 @@ print(model.summary())</pre>
       </div>
 
       <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
-        <h3 class="text-xs font-bold text-purple-600 dark:text-purple-400 mb-2">Executive Storytelling: Pyramid Principle Rules</h3>
+        <h3 class="text-xs font-bold text-purple-600 dark:text-purple-400 mb-2 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+          Executive Storytelling: Pyramid Principle Rules
+        </h3>
         <div class="space-y-2 text-xs text-zinc-700 dark:text-zinc-300">
           <div class="p-2 rounded bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark">
             <strong>Rule 1: Answer First (BLUF):</strong> State recommendation in slide 1 before methodology.
@@ -427,20 +439,16 @@ print(model.summary())</pre>
           <p id="modalObjectives" class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed"></p>
         </div>
 
-        <!-- Deliverable Checklist & Future Task Adder -->
         <div>
           <div class="flex items-center justify-between mb-1.5">
             <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">Deliverable Tasks & Milestones</h4>
             <span class="text-[10px] text-zinc-400" id="modalTasksCount">0/0</span>
           </div>
           
-          <div id="modalTasksList" class="space-y-1.5 bg-zinc-50 dark:bg-subDark p-2.5 rounded-xl border border-zinc-200 dark:border-borderDark text-xs">
-            <!-- Dynamic task checkboxes -->
-          </div>
+          <div id="modalTasksList" class="space-y-1.5 bg-zinc-50 dark:bg-subDark p-2.5 rounded-xl border border-zinc-200 dark:border-borderDark text-xs"></div>
 
-          <!-- Future Task Input Form -->
           <div class="mt-2.5 flex items-center gap-1.5">
-            <input type="text" id="newCustomTaskInput" placeholder="+ Add custom deliverable/task..." class="flex-1 bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500" onkeydown="if(event.key==='Enter') addCustomTaskToCurrentWeek()">
+            <input type="text" id="newCustomTaskInput" placeholder="Add custom deliverable / task..." class="flex-1 bg-zinc-50 dark:bg-subDark border border-zinc-200 dark:border-borderDark rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500" onkeydown="if(event.key==='Enter') addCustomTaskToCurrentWeek()">
             <button onclick="addCustomTaskToCurrentWeek()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition flex-shrink-0">
               Add Task
             </button>
@@ -449,8 +457,7 @@ print(model.summary())</pre>
 
         <div>
           <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1">Key Frameworks & Knowledge Notes</h4>
-          <div id="modalKeyConcepts" class="p-2.5 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30 rounded-xl text-xs text-blue-800 dark:text-blue-300 space-y-1">
-          </div>
+          <div id="modalKeyConcepts" class="p-2.5 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/30 rounded-xl text-xs text-blue-800 dark:text-blue-300 space-y-1"></div>
         </div>
 
         <div>
@@ -519,25 +526,25 @@ print(model.summary())</pre>
   </div>
 
   <!-- MOBILE STICKY BOTTOM NAVIGATION BAR (IPHONE 15 OPTIMIZED) -->
-  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-cardDark/90 backdrop-blur-md border-t border-zinc-200 dark:border-borderDark px-2 py-1 flex items-center justify-around shadow-lg" style="padding-bottom: max(6px, env(safe-area-inset-bottom));">
-    <button onclick="switchTab('roadmap')" id="mobTab-roadmap" class="flex flex-col items-center py-1 px-3 text-blue-600 dark:text-blue-400">
-      <span class="text-lg">📋</span>
+  <nav class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-cardDark/95 backdrop-blur-md border-t border-zinc-200 dark:border-borderDark px-2 py-1 flex items-center justify-around shadow-lg" style="padding-bottom: max(6px, env(safe-area-inset-bottom));">
+    <button onclick="switchTab('roadmap')" id="mobTab-roadmap" class="flex flex-col items-center py-1.5 px-3 text-blue-600 dark:text-blue-400">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
       <span class="text-[10px] font-bold">Roadmap</span>
     </button>
-    <button onclick="switchTab('mindmap')" id="mobTab-mindmap" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
-      <span class="text-lg">🧠</span>
+    <button onclick="switchTab('mindmap')" id="mobTab-mindmap" class="flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
       <span class="text-[10px] font-medium">Skills</span>
     </button>
-    <button onclick="switchTab('mece-builder')" id="mobTab-mece-builder" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
-      <span class="text-lg">📐</span>
+    <button onclick="switchTab('mece-builder')" id="mobTab-mece-builder" class="flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
       <span class="text-[10px] font-medium">MECE</span>
     </button>
-    <button onclick="switchTab('cheatsheet')" id="mobTab-cheatsheet" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
-      <span class="text-lg">⚡</span>
+    <button onclick="switchTab('cheatsheet')" id="mobTab-cheatsheet" class="flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
       <span class="text-[10px] font-medium">Cheats</span>
     </button>
-    <button onclick="switchTab('timer')" id="mobTab-timer" class="flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400">
-      <span class="text-lg">⏱️</span>
+    <button onclick="switchTab('timer')" id="mobTab-timer" class="flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       <span class="text-[10px] font-medium">Timer</span>
     </button>
   </nav>
@@ -854,10 +861,11 @@ print(model.summary())</pre>
       }
     ];
 
-    // --- STRATEGIC MIND MAP PILLARS ---
+    // --- STRATEGIC MIND MAP PILLARS (WITH CLEAN SVG ICONS) ---
     const MINDMAP_DOMAINS = [
       {
-        id: "tech_tools", title: "Technical Tool Mastery", icon: "⚡",
+        id: "tech_tools", title: "Technical Tool Mastery",
+        iconSvg: `<svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>`,
         skills: [
           { name: "Advanced Excel (Power Query, Dynamic Arrays, Financial Models)", level: "Intermediate" },
           { name: "Power BI / Tableau (Star Schema, DAX Time Intelligence, LOD)", level: "Intermediate" },
@@ -866,7 +874,8 @@ print(model.summary())</pre>
         ]
       },
       {
-        id: "git_devops", title: "Git and DevOps", icon: "🌿",
+        id: "git_devops", title: "Git and DevOps",
+        iconSvg: `<svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/></svg>`,
         skills: [
           { name: "GitHub / GitLab repository governance & branching strategy", level: "Competent" },
           { name: "Git for Data Analysis (Reproducible notebooks, dvc, commit hygiene)", level: "Competent" },
@@ -875,7 +884,8 @@ print(model.summary())</pre>
         ]
       },
       {
-        id: "analytics_stats", title: "Analytics and Statistics", icon: "📊",
+        id: "analytics_stats", title: "Analytics and Statistics",
+        iconSvg: `<svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`,
         skills: [
           { name: "Descriptive & Inferential Statistics (Distributions, CLT, CI)", level: "Competent" },
           { name: "Hypothesis Testing & A/B Experimentation Design", level: "Competent" },
@@ -884,7 +894,8 @@ print(model.summary())</pre>
         ]
       },
       {
-        id: "frameworks_methodology", title: "Frameworks and Methodology", icon: "🏛️",
+        id: "frameworks_methodology", title: "Frameworks and Methodology",
+        iconSvg: `<svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>`,
         skills: [
           { name: "Consulting Frameworks (MECE, Issue Trees, Pyramid Principle)", level: "Competent" },
           { name: "Agile Project Delivery (Kanban vs Scrum, Sprints, Backlogs)", level: "Competent" },
@@ -893,7 +904,8 @@ print(model.summary())</pre>
         ]
       },
       {
-        id: "ai_automation", title: "AI and Automation", icon: "🤖",
+        id: "ai_automation", title: "AI and Automation",
+        iconSvg: `<svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>`,
         skills: [
           { name: "AI Integration in Daily Data Workflows & LLM Prompts", level: "Practitioner" },
           { name: "Daily Task Planning & Autonomous AI Agents", level: "Novice" },
@@ -902,7 +914,8 @@ print(model.summary())</pre>
         ]
       },
       {
-        id: "personal_strategic", title: "Personal, Financial & Strategic", icon: "🎯",
+        id: "personal_strategic", title: "Personal, Financial & Strategic",
+        iconSvg: `<svg class="w-4 h-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>`,
         skills: [
           { name: "Executive Storytelling & C-Suite Board Presentations", level: "Competent" },
           { name: "Career Milestone & Promotion Roadmapping (Lead / SME / Architect)", level: "Practitioner" },
@@ -913,12 +926,12 @@ print(model.summary())</pre>
     ];
 
     // --- APPLICATION PERSISTED STATE ---
-    const STORAGE_KEY = "strategic_upskill_tracker_state_v2";
+    const STORAGE_KEY = "strategic_upskill_tracker_state_v3";
 
     let appState = {
-      theme: 'dark', // 'dark' | 'light'
-      customModules: [], // user-added modules
-      weeks: {}, // { [weekId]: { status, customTasks: [{text, done}], baseTasksDone: [bool], notes } }
+      theme: 'dark',
+      customModules: [],
+      weeks: {},
       competencies: {},
       meceNotes: { s: "", c: "", q: "", a: "", b1_t: "Pillar 1: Revenue Drivers", b1_b: "", b2_t: "Pillar 2: Cost Optimization", b2_b: "", b3_t: "Pillar 3: Retention & Churn", b3_b: "" },
       pomodoro: { count: 0, secondsWorked: 0 },
@@ -931,7 +944,7 @@ print(model.summary())</pre>
     }
 
     function initAppState() {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("strategic_upskill_tracker_state_v2");
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -941,7 +954,6 @@ print(model.summary())</pre>
         }
       }
 
-      // Ensure every base module has state
       BASE_ROADMAP_DATA.forEach(w => {
         if (!appState.weeks[w.id]) {
           appState.weeks[w.id] = {
@@ -956,7 +968,6 @@ print(model.summary())</pre>
         }
       });
 
-      // Apply theme
       applyTheme(appState.theme || 'dark');
     }
 
@@ -981,13 +992,17 @@ print(model.summary())</pre>
 
       if (theme === 'dark') {
         html.classList.add('dark');
-        if (themeIcon) themeIcon.innerText = "☀️";
-        if (themeLabel) themeLabel.innerText = "Light Mode";
+        if (themeIcon) {
+          themeIcon.innerHTML = `<svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>`;
+        }
+        if (themeLabel) themeLabel.innerText = "Light";
         if (metaTheme) metaTheme.setAttribute("content", "#000000");
       } else {
         html.classList.remove('dark');
-        if (themeIcon) themeIcon.innerText = "🌙";
-        if (themeLabel) themeLabel.innerText = "Dark Mode";
+        if (themeIcon) {
+          themeIcon.innerHTML = `<svg class="w-4 h-4 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>`;
+        }
+        if (themeLabel) themeLabel.innerText = "Dark";
         if (metaTheme) metaTheme.setAttribute("content", "#f8fafc");
       }
     }
@@ -1019,7 +1034,6 @@ print(model.summary())</pre>
           return;
         }
 
-        // Calculate combined task completion
         const baseDone = (weekState.baseTasksDone || []).filter(Boolean).length;
         const customDone = (weekState.customTasks || []).filter(t => t.done).length;
         const totalCompleted = baseDone + customDone;
@@ -1044,8 +1058,14 @@ print(model.summary())</pre>
             <h3 class="text-sm sm:text-base font-bold text-zinc-900 dark:text-white hover:text-blue-500 cursor-pointer transition" onclick="openWeekModal('${w.id}')">${w.title}</h3>
             <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-1 line-clamp-2">${w.objectives || ''}</p>
             <div class="flex flex-wrap items-center gap-2.5 mt-2">
-              <span class="text-[11px] text-blue-600 dark:text-blue-400 font-mono bg-blue-50 dark:bg-subDark px-2 py-0.5 rounded border border-blue-200 dark:border-borderDark">🛠️ ${w.tools || 'General'}</span>
-              <span class="text-[11px] text-zinc-500 dark:text-zinc-400">✅ ${totalCompleted}/${totalTasks} deliverables (${percentTasks}%)</span>
+              <span class="text-[11px] text-blue-600 dark:text-blue-400 font-mono bg-blue-50 dark:bg-subDark px-2 py-0.5 rounded border border-blue-200 dark:border-borderDark inline-flex items-center gap-1">
+                <svg class="w-3 h-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                ${w.tools || 'General'}
+              </span>
+              <span class="text-[11px] text-zinc-500 dark:text-zinc-400 inline-flex items-center gap-1">
+                <svg class="w-3 h-3 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                ${totalCompleted}/${totalTasks} deliverables (${percentTasks}%)
+              </span>
             </div>
           </div>
 
@@ -1117,7 +1137,6 @@ print(model.summary())</pre>
       document.getElementById("modalWeekTools").innerText = `Tools: ${week.tools || 'General'}`;
       document.getElementById("modalObjectives").innerText = week.objectives || 'No objectives specified.';
 
-      // Concepts
       const conceptsDiv = document.getElementById("modalKeyConcepts");
       if (week.concepts && week.concepts.length > 0) {
         conceptsDiv.innerHTML = week.concepts.map(c => `<div>• ${c}</div>`).join("");
@@ -1127,7 +1146,6 @@ print(model.summary())</pre>
 
       renderModalTasks(week, weekState);
 
-      // Notes
       document.getElementById("modalNotes").value = weekState.notes || "";
       document.getElementById("newCustomTaskInput").value = "";
 
@@ -1141,7 +1159,6 @@ print(model.summary())</pre>
       let completedCount = 0;
       let totalCount = 0;
 
-      // Base tasks
       if (week.tasks) {
         week.tasks.forEach((task, idx) => {
           totalCount++;
@@ -1160,7 +1177,6 @@ print(model.summary())</pre>
         });
       }
 
-      // Custom user-added tasks
       if (weekState.customTasks) {
         weekState.customTasks.forEach((cTask, cIdx) => {
           totalCount++;
@@ -1385,7 +1401,7 @@ print(model.summary())</pre>
 
         card.innerHTML = `
           <div class="flex items-center gap-2 mb-2 pb-2 border-b border-zinc-100 dark:border-borderDark">
-            <span class="text-base">${dom.icon}</span>
+            <span class="w-7 h-7 rounded-lg bg-zinc-100 dark:bg-subDark border border-zinc-200 dark:border-borderDark flex items-center justify-center">${dom.iconSvg}</span>
             <h3 class="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white">${dom.title}</h3>
           </div>
           <div>${skillRows}</div>
@@ -1498,7 +1514,7 @@ print(model.summary())</pre>
             isTimerRunning = false;
             appState.pomodoro.count++;
             saveState();
-            alert("🎉 Great focus! Sprint complete. Take a 5-minute break.");
+            alert("Sprint complete. Take a 5-minute break.");
             resetTimer();
           }
         }, 1000);
@@ -1540,20 +1556,20 @@ print(model.summary())</pre>
         if (t === tabId) {
           view.classList.remove('hidden');
           if (desktopBtn) {
-            desktopBtn.className = "px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-1.5";
+            desktopBtn.className = "px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-2";
           }
           if (mobBtn) {
-            mobBtn.className = "flex flex-col items-center py-1 px-3 text-blue-600 dark:text-blue-400";
-            mobBtn.querySelector("span:last-child").className = "text-[10px] font-bold";
+            mobBtn.className = "flex flex-col items-center py-1.5 px-3 text-blue-600 dark:text-blue-400";
+            mobBtn.querySelector("span").className = "text-[10px] font-bold";
           }
         } else {
           view.classList.add('hidden');
           if (desktopBtn) {
-            desktopBtn.className = "px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-1.5";
+            desktopBtn.className = "px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2";
           }
           if (mobBtn) {
-            mobBtn.className = "flex flex-col items-center py-1 px-3 text-zinc-500 dark:text-zinc-400";
-            mobBtn.querySelector("span:last-child").className = "text-[10px] font-medium";
+            mobBtn.className = "flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400";
+            mobBtn.querySelector("span").className = "text-[10px] font-medium";
           }
         }
       });
@@ -1588,9 +1604,9 @@ print(model.summary())</pre>
           renderCompetencyGrid();
           loadMECEInputs();
           updateHUD();
-          alert("✅ Progress and custom tasks restored successfully!");
+          alert("Progress and custom tasks restored successfully.");
         } catch (err) {
-          alert("❌ Invalid JSON file format.");
+          alert("Invalid JSON file format.");
         }
       };
       reader.readAsText(file);
