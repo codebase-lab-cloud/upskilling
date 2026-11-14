@@ -167,9 +167,9 @@
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
       Competency Matrix
     </button>
-    <button onclick="switchTab('mece-builder')" id="tabBtn-mece-builder" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2">
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
-      MECE & SCQA Canvas
+    <button onclick="switchTab('learning')" id="tabBtn-learning" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      Learning Hub & Concepts
     </button>
     <button onclick="switchTab('cheatsheet')" id="tabBtn-cheatsheet" class="px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
@@ -183,7 +183,6 @@
 
   <!-- TAB 1: 22-WEEK SPRINT ROADMAP -->
   <section id="view-roadmap" class="space-y-4">
-    <!-- FILTERS AND ACTION BAR -->
     <div class="bg-white dark:bg-cardDark p-3.5 sm:p-4 rounded-xl border border-zinc-200 dark:border-borderDark flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
       <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none text-xs">
         <button onclick="setPhaseFilter('ALL')" id="filter-phase-ALL" class="px-2.5 py-1.5 rounded-lg font-semibold bg-blue-600 text-white flex-shrink-0">All</button>
@@ -232,72 +231,61 @@
     </div>
   </section>
 
-  <!-- TAB 3: MECE ISSUE TREE & HYPOTHESIS CANVAS -->
-  <section id="view-mece-builder" class="hidden space-y-4">
-    <div class="bg-white dark:bg-cardDark p-4 sm:p-6 rounded-2xl border border-zinc-200 dark:border-borderDark">
+  <!-- TAB 3: LEARNING HUB & CONCEPTS (REPLACED MECE) -->
+  <section id="view-learning" class="hidden space-y-4">
+    <div class="bg-white dark:bg-cardDark p-4 sm:p-6 rounded-2xl border border-zinc-200 dark:border-borderDark shadow-sm">
+      
+      <!-- Learning Hub Header -->
       <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
         <div>
           <h2 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
-            MECE Issue Tree & SCQA Canvas
+            <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            Executive Micro-Learning Hub
           </h2>
           <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-            Top-down consulting problem breakdown. Auto-saves directly in your browser.
+            Jargon-free concepts with everyday analogies and senior tips for quick on-the-go mastery.
           </p>
         </div>
-        <div class="flex items-center gap-2 w-full sm:w-auto">
-          <button onclick="loadMECETemplate('profitability')" class="px-2.5 py-1 text-xs rounded bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-            Profitability Tree
-          </button>
-          <button onclick="loadMECETemplate('churn')" class="px-2.5 py-1 text-xs rounded bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
-            Churn Tree
-          </button>
-          <button onclick="clearMECECanvas()" class="px-2.5 py-1 text-xs rounded bg-zinc-100 dark:bg-subDark text-zinc-600 dark:text-zinc-300 border border-zinc-200 dark:border-borderDark">
-            Clear
-          </button>
+
+        <!-- Category Filter Pills -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none w-full sm:w-auto text-xs">
+          <button onclick="setLearnFilter('ALL')" id="lfilter-ALL" class="px-2.5 py-1 rounded-lg font-semibold bg-blue-600 text-white flex-shrink-0">All</button>
+          <button onclick="setLearnFilter('stats')" id="lfilter-stats" class="px-2.5 py-1 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">Statistics</button>
+          <button onclick="setLearnFilter('python')" id="lfilter-python" class="px-2.5 py-1 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">Python</button>
+          <button onclick="setLearnFilter('consulting')" id="lfilter-consulting" class="px-2.5 py-1 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">Consulting</button>
+          <button onclick="setLearnFilter('tips')" id="lfilter-tips" class="px-2.5 py-1 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">Tips & Tricks</button>
+          <button onclick="setLearnFilter('saved')" id="lfilter-saved" class="px-2.5 py-1 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0">Bookmarked</button>
         </div>
       </div>
 
-      <!-- SCQA Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
-          <label class="block text-[11px] font-bold text-blue-600 dark:text-blue-400 mb-1">1. Situation</label>
-          <textarea id="scqa-s" rows="3" oninput="saveMECENotes()" placeholder="Current state context..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+      <!-- Smart Search & Live Explanation Input -->
+      <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark mb-4">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+          <div class="relative flex-1">
+            <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="learnSearchInput" oninput="handleLearnSearch()" placeholder="Search or look up any topic (e.g. P-value, Vectorization, Simpson's Paradox)..." class="w-full bg-white dark:bg-cardDark border border-zinc-200 dark:border-borderDark rounded-xl pl-9 pr-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500" onkeydown="if(event.key==='Enter') executeLiveConceptLookup()">
+          </div>
+          <div class="flex items-center gap-1.5 flex-shrink-0">
+            <button onclick="executeLiveConceptLookup()" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white transition flex items-center justify-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span>Explain in Layman Terms</span>
+            </button>
+            <button onclick="openGoogleSearch()" class="px-3 py-2 rounded-xl bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-xs font-medium text-zinc-700 dark:text-zinc-200 transition flex items-center gap-1" title="Google Search">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+              <span class="hidden sm:inline">Google</span>
+            </button>
+          </div>
         </div>
-        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
-          <label class="block text-[11px] font-bold text-amber-600 dark:text-amber-400 mb-1">2. Complication</label>
-          <textarea id="scqa-c" rows="3" oninput="saveMECENotes()" placeholder="The obstacle or pain point..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
-        </div>
-        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
-          <label class="block text-[11px] font-bold text-indigo-600 dark:text-indigo-400 mb-1">3. Core Question</label>
-          <textarea id="scqa-q" rows="3" oninput="saveMECENotes()" placeholder="What is the key question to solve?..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
-        </div>
-        <div class="bg-zinc-50 dark:bg-subDark p-3 rounded-xl border border-zinc-200 dark:border-borderDark">
-          <label class="block text-[11px] font-bold text-emerald-600 dark:text-emerald-400 mb-1">4. Governed Hypothesis</label>
-          <textarea id="scqa-a" rows="3" oninput="saveMECENotes()" placeholder="Initial answer to test..." class="w-full bg-transparent text-xs text-zinc-900 dark:text-zinc-100 resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
+
+        <!-- Live Lookup Summary Box (Populated when user searches a custom query) -->
+        <div id="liveLookupBox" class="hidden mt-3 pt-3 border-t border-zinc-200 dark:border-borderDark text-xs">
+          <!-- Injected dynamically -->
         </div>
       </div>
 
-      <!-- MECE Branches -->
-      <div class="bg-zinc-50 dark:bg-subDark p-3.5 rounded-xl border border-zinc-200 dark:border-borderDark">
-        <h3 class="text-xs font-bold text-zinc-900 dark:text-white mb-2 flex items-center justify-between">
-          <span>MECE Sub-Branch Decomposition</span>
-          <span class="text-[10px] text-zinc-500 font-normal">Mutually Exclusive, Collectively Exhaustive</span>
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div class="p-3 bg-white dark:bg-cardDark rounded-lg border border-zinc-200 dark:border-borderDark">
-            <input type="text" id="mece-b1-title" oninput="saveMECENotes()" value="Pillar 1: Revenue Drivers" class="w-full font-semibold text-xs text-blue-600 dark:text-blue-400 bg-transparent border-b border-zinc-200 dark:border-borderDark pb-1 mb-1.5 focus:outline-none">
-            <textarea id="mece-b1-body" rows="4" oninput="saveMECENotes()" class="w-full text-xs text-zinc-700 dark:text-zinc-300 bg-transparent resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
-          </div>
-          <div class="p-3 bg-white dark:bg-cardDark rounded-lg border border-zinc-200 dark:border-borderDark">
-            <input type="text" id="mece-b2-title" oninput="saveMECENotes()" value="Pillar 2: Cost Optimization" class="w-full font-semibold text-xs text-emerald-600 dark:text-emerald-400 bg-transparent border-b border-zinc-200 dark:border-borderDark pb-1 mb-1.5 focus:outline-none">
-            <textarea id="mece-b2-body" rows="4" oninput="saveMECENotes()" class="w-full text-xs text-zinc-700 dark:text-zinc-300 bg-transparent resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
-          </div>
-          <div class="p-3 bg-white dark:bg-cardDark rounded-lg border border-zinc-200 dark:border-borderDark">
-            <input type="text" id="mece-b3-title" oninput="saveMECENotes()" value="Pillar 3: Retention & Churn" class="w-full font-semibold text-xs text-purple-600 dark:text-purple-400 bg-transparent border-b border-zinc-200 dark:border-borderDark pb-1 mb-1.5 focus:outline-none">
-            <textarea id="mece-b3-body" rows="4" oninput="saveMECENotes()" class="w-full text-xs text-zinc-700 dark:text-zinc-300 bg-transparent resize-none border-0 focus:ring-0 p-0 placeholder-zinc-400"></textarea>
-          </div>
-        </div>
+      <!-- Concepts Grid Container -->
+      <div id="learningGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+        <!-- Rendered by JS -->
       </div>
     </div>
   </section>
@@ -325,7 +313,7 @@ FROM daily_sales;</pre>
 
       <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark">
         <h3 class="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
           Power BI DAX: YoY Growth & Cohort Retention
         </h3>
         <pre class="bg-zinc-900 text-zinc-200 p-3 rounded-lg text-xs font-mono overflow-x-auto leading-relaxed">
@@ -417,7 +405,6 @@ print(model.summary())</pre>
   <div id="weekModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-end sm:items-center justify-center sm:p-4">
     <div class="bg-white dark:bg-cardDark border-t sm:border border-zinc-200 dark:border-borderDark rounded-t-3xl sm:rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-200">
       
-      <!-- Modal Header -->
       <div class="p-4 sm:p-5 border-b border-zinc-200 dark:border-borderDark flex items-start justify-between bg-zinc-50 dark:bg-subDark">
         <div>
           <div class="flex items-center gap-2">
@@ -432,7 +419,6 @@ print(model.summary())</pre>
         </button>
       </div>
 
-      <!-- Modal Body -->
       <div class="p-4 sm:p-5 overflow-y-auto space-y-4 text-sm flex-1">
         <div>
           <h4 class="text-[11px] font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1">Objectives & Senior-to-Lead Shift</h4>
@@ -466,7 +452,6 @@ print(model.summary())</pre>
         </div>
       </div>
 
-      <!-- Modal Footer -->
       <div class="p-3.5 sm:p-4 border-t border-zinc-200 dark:border-borderDark bg-zinc-50 dark:bg-subDark flex justify-between items-center">
         <span class="text-[11px] text-zinc-500">Auto-saved in browser</span>
         <button onclick="closeWeekModal()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white transition">
@@ -535,9 +520,9 @@ print(model.summary())</pre>
       <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
       <span class="text-[10px] font-medium">Skills</span>
     </button>
-    <button onclick="switchTab('mece-builder')" id="mobTab-mece-builder" class="flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400">
-      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
-      <span class="text-[10px] font-medium">MECE</span>
+    <button onclick="switchTab('learning')" id="mobTab-learning" class="flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400">
+      <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      <span class="text-[10px] font-medium">Learn</span>
     </button>
     <button onclick="switchTab('cheatsheet')" id="mobTab-cheatsheet" class="flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400">
       <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
@@ -861,6 +846,217 @@ print(model.summary())</pre>
       }
     ];
 
+    // --- CURATED LAYMAN LEARNING LIBRARY ---
+    const BASE_LEARNING_TOPICS = [
+      // STATISTICS
+      {
+        id: "p_value",
+        title: "P-Value & Significance",
+        category: "stats",
+        categoryName: "Statistics",
+        badgeClass: "badge-p3",
+        layman: "The 'surprise factor'. It tells you: if there was zero real difference and everything happened purely by random fluke, how likely would it be to see numbers this extreme?",
+        analogy: "Imagine flipping a coin 10 times and getting 10 heads in a row. A tiny p-value (<0.05) is the referee blowing the whistle saying: 'This is too weird to be random luck—the coin is loaded!'",
+        tip: "A p-value doesn't prove an effect is huge in business—only that it's probably not noise. Always check the dollar lift alongside the p-value."
+      },
+      {
+        id: "clt",
+        title: "Central Limit Theorem (CLT)",
+        category: "stats",
+        categoryName: "Statistics",
+        badgeClass: "badge-p3",
+        layman: "No matter how weird, skewed, or wild your raw individual data points look, the averages of random samples from that data will almost always form a clean, predictable bell curve.",
+        analogy: "Individual candy bars in a factory might weigh 45g or 55g in random messy batches. But if you weigh crates of 100 bars at a time, the crate averages will form a neat normal distribution every single time.",
+        tip: "CLT is the secret engine why we can calculate confidence intervals on messy, highly skewed business data once your sample size n > 30."
+      },
+      {
+        id: "type1_type2",
+        title: "Type I vs Type II Errors",
+        category: "stats",
+        categoryName: "Statistics",
+        badgeClass: "badge-p3",
+        layman: "False Alarm vs Missed Reality. Type I (Alpha) is claiming a change worked when it didn't. Type II (Beta) is missing a real breakthrough because your test wasn't sensitive enough.",
+        analogy: "Type I Error is a smoke detector beeping loudly when you just burnt toast (false positive). Type II Error is a real fire starting in the kitchen and the detector stays dead silent (false negative).",
+        tip: "In fraud detection, you tolerate higher Type I (flagging innocent charges) to prevent catastrophic Type II (missing a $50k hacker breach)."
+      },
+      {
+        id: "ab_testing",
+        title: "A/B Testing & MDE",
+        category: "stats",
+        categoryName: "Statistics",
+        badgeClass: "badge-p3",
+        layman: "Showing Version A to half your users and Version B to the other half to see which performs better. MDE (Minimum Detectable Effect) is the smallest lift you can reliably detect without running the test forever.",
+        analogy: "Testing if a new green checkout button beats the old blue one. If you want to detect a tiny 0.1% lift, you need millions of shoppers; if you expect a 10% jump, a few thousand visits are plenty.",
+        tip: "Never 'peek and stop' early when results look good. Early stopping inflates your false positive rate up to 30%."
+      },
+      {
+        id: "confidence_interval",
+        title: "Confidence Intervals (95% CI)",
+        category: "stats",
+        categoryName: "Statistics",
+        badgeClass: "badge-p3",
+        layman: "Giving a realistic range of possibilities instead of a single fake-precise guess.",
+        analogy: "Saying 'The flight will arrive between 5:10 PM and 5:25 PM' is honest and useful. Claiming 'It will land at exactly 5:17 PM and 42 seconds' is statistically irresponsible.",
+        tip: "When presenting to VP stakeholders, quote the lower bound: 'At 95% confidence, this feature brings at least $1.2M incremental revenue.'"
+      },
+      {
+        id: "simpsons_paradox",
+        title: "Simpson's Paradox",
+        category: "stats",
+        categoryName: "Statistics",
+        badgeClass: "badge-p3",
+        layman: "A confusing phenomenon where a clear trend appears in individual subgroups, but completely flips upside down when the groups are combined together.",
+        analogy: "Hospital A has a higher overall patient death rate than Hospital B. But Hospital A is a specialized trauma center treating gunshot wounds, while Hospital B does routine checkups. When broken down by illness severity, Hospital A actually saves more lives in every category!",
+        tip: "Always drill down into customer tiers (Enterprise vs SMB, Mobile vs Desktop) before declaring a company-wide winner."
+      },
+      {
+        id: "correlation_causation",
+        title: "Correlation vs Causation",
+        category: "stats",
+        categoryName: "Statistics",
+        badgeClass: "badge-p3",
+        layman: "Just because two numbers rise and fall at the same time does not mean one caused the other. They often share a hidden third driver.",
+        analogy: "Ice cream sales and drowning rates both spike every July. Ice cream doesn't drown swimmers—summer heat causes both ice cream cravings and swimming.",
+        tip: "Stakeholders love to confuse loyalty with causation: 'Users who use Dark Mode stay 2x longer!' Usually, loyal power users just explore settings more."
+      },
+
+      // PYTHON
+      {
+        id: "py_vectorization",
+        title: "Vectorization vs For-Loops",
+        category: "python",
+        categoryName: "Python",
+        badgeClass: "badge-p2",
+        layman: "Doing math on an entire column in one lightning-fast C-speed operation instead of inspecting rows one-by-one with a slow Python 'for' loop.",
+        analogy: "Instead of hand-painting 10,000 toy cars one at a time with a brush, you run them all through an automated industrial spray paint booth simultaneously.",
+        tip: "Replace `for index, row in df.iterrows()` with `df['total'] = df['qty'] * df['price']`. It runs 100x to 500x faster."
+      },
+      {
+        id: "py_groupby_transform",
+        title: "GroupBy vs Transform in Pandas",
+        category: "python",
+        categoryName: "Python",
+        badgeClass: "badge-p2",
+        layman: "GroupBy collapses rows into summary totals. Transform calculates the group total but keeps the original table height so you can compare each individual row to its group average.",
+        analogy: "GroupBy gives you the average salary of each department (5 rows). Transform writes that department average next to each employee's name (10,000 rows), making it easy to calculate if someone is underpaid.",
+        tip: "`df['dept_avg'] = df.groupby('dept')['salary'].transform('mean')` followed by `df['ratio'] = df['salary'] / df['dept_avg']` is standard architect code."
+      },
+      {
+        id: "py_loc_iloc",
+        title: "loc vs iloc in Pandas",
+        category: "python",
+        categoryName: "Python",
+        badgeClass: "badge-p2",
+        layman: "Searching by label/name (.loc) vs searching by numerical position (.iloc).",
+        analogy: "Sending a letter to 'Jane Doe, Apartment 4B' (.loc: human readable name) vs telling the delivery driver 'Stop at the 4th door on the left' (.iloc: counting slot numbers).",
+        tip: "Use `.loc[condition, 'column']` to update values safely and eliminate the notorious `SettingWithCopyWarning`."
+      },
+      {
+        id: "py_memory_cat",
+        title: "Category Dtypes for Memory Saving",
+        category: "python",
+        categoryName: "Python",
+        badgeClass: "badge-p2",
+        layman: "Replacing repeated strings (like 'California', 'Texas') with tiny internal numbers under the hood, shrinking RAM usage by 70-90%.",
+        analogy: "Assigning football players a 2-digit jersey number instead of stitching their full legal name and bio on every single playbook page.",
+        tip: "Convert low-cardinality columns to categories: `df['country'] = df['country'].astype('category')`. Huge for large DataFrames."
+      },
+      {
+        id: "py_lambda",
+        title: "Lambda Functions",
+        category: "python",
+        categoryName: "Python",
+        badgeClass: "badge-p2",
+        layman: "A quick throwaway mini-function defined in one line without giving it a formal name.",
+        analogy: "Writing a phone number on a sticky note to dial once and toss into the trash, rather than adding it to your permanent leather contacts book.",
+        tip: "Use lambdas sparingly for simple transforms: `df['clean_url'] = df['raw_url'].apply(lambda x: x.split('?')[0])`."
+      },
+
+      // CONSULTING & STRATEGY
+      {
+        id: "mece_principle",
+        title: "The MECE Principle",
+        category: "consulting",
+        categoryName: "Consulting",
+        badgeClass: "badge-p1",
+        layman: "Mutually Exclusive, Collectively Exhaustive. No overlaps, and no gaps. Every piece of the puzzle fits into one bucket, and together they cover 100% of the picture.",
+        analogy: "Sorting laundry into Whites, Darks, and Colors. Every shirt belongs in exactly one pile (no confusion), and no shirt is left on the floor.",
+        tip: "Whenever an executive asks 'Why did sales drop?', break it into: Price vs Volume vs Mix. Never mix categories like 'Marketing issue' with 'Price drop'."
+      },
+      {
+        id: "pyramid_bluf",
+        title: "The Pyramid Principle (BLUF)",
+        category: "consulting",
+        categoryName: "Consulting",
+        badgeClass: "badge-p1",
+        layman: "Bottom Line Up Front. Give the final recommendation in the very first 10 seconds, then support it with 3 clear logical pillars.",
+        analogy: "A newspaper front page puts the bold headline 'President Signs Climate Bill' at the top, not buried in paragraph 14 after describing the pen used.",
+        tip: "Executives are time-starved. Start meetings with: 'We recommend exiting the APAC retail line to save $4.2M in annual loss. Here are the 3 reasons why.'"
+      },
+      {
+        id: "pareto_8020",
+        title: "The 80/20 Rule (Pareto Principle)",
+        category: "consulting",
+        categoryName: "Consulting",
+        badgeClass: "badge-p1",
+        layman: "Roughly 80% of consequences come from 20% of causes. Most effort is wasted on minor trivia.",
+        analogy: "In most retail businesses, 20% of your product catalog generates 80% of total revenue. 20% of customers generate 80% of support tickets.",
+        tip: "When handed an enormous dataset with 500 columns, identify the top 5 drivers first before boiling the ocean."
+      },
+      {
+        id: "scqa_story",
+        title: "SCQA Storytelling Framework",
+        category: "consulting",
+        categoryName: "Consulting",
+        badgeClass: "badge-p1",
+        layman: "Situation -> Complication -> Question -> Answer. The universal storytelling structure that makes business proposals impossible to misunderstand.",
+        analogy: "Situation: You own a busy bakery. Complication: Flour prices doubled overnight. Question: How do we stay profitable without angering regulars? Answer: Introduce premium artisan bundles.",
+        tip: "Use SCQA for slide 1 of every board deck. It brings every stakeholder onto the exact same mental page in 30 seconds."
+      },
+      {
+        id: "five_whys",
+        title: "The 5 Whys (Root Cause Analysis)",
+        category: "consulting",
+        categoryName: "Consulting",
+        badgeClass: "badge-p1",
+        layman: "Keep asking 'Why?' five times in a row to drill past surface symptoms down to the broken systemic root cause.",
+        analogy: "The car won't start. Why? Dead battery. Why? Alternator didn't charge it. Why? Alternator belt snapped. Why? It was never replaced during routine service. Why? We don't have a vehicle maintenance schedule. (Real fix: create a maintenance calendar, not just buy a battery).",
+        tip: "Stop patching bugs in dashboards. Ask why the upstream pipeline emitted corrupt nulls in the first place."
+      },
+
+      // TIPS & TRICKS
+      {
+        id: "tip_so_what",
+        title: "The 'So What?' Test",
+        category: "tips",
+        categoryName: "Tips & Tricks",
+        badgeClass: "badge-custom",
+        layman: "Never present a chart that merely states what happened. Every chart header must explain what it means for business dollars and what decision to make.",
+        analogy: "Instead of titling a chart 'Monthly Active Users Q3', title it: 'Active Users Dropped 14% Due to Checkout Bug; Fix Deployed to Recover $220k/mo.'",
+        tip: "If a chart doesn't prompt an action or decision, delete it from the presentation."
+      },
+      {
+        id: "tip_nullif_sql",
+        title: "Defensive SQL: NULLIF Division",
+        category: "tips",
+        categoryName: "Tips & Tricks",
+        badgeClass: "badge-custom",
+        layman: "Never divide by zero and break production queries. Wrap denominators in `NULLIF`.",
+        analogy: "Putting a circuit breaker on a power outlet so an unexpected power surge trips a switch instead of burning down the house.",
+        tip: "Always write: `DIVIDE = numerator / NULLIF(denominator, 0)`. SQL cleanly outputs NULL instead of throwing a fatal error."
+      },
+      {
+        id: "tip_fermi_estimate",
+        title: "Back-of-the-Napkin Sanity Check",
+        category: "tips",
+        categoryName: "Tips & Tricks",
+        badgeClass: "badge-custom",
+        layman: "Using fast mental math approximations to check if your complex machine learning model or SQL query makes common sense before hitting send.",
+        analogy: "If a contractor says remodeling your 50 sq ft bathroom will take 4,000 gallons of paint, you don't need a calculator to know someone messed up the units.",
+        tip: "If your model says revenue will jump 800% next quarter in a mature industry, sanity-check your join conditions for duplicate row fans."
+      }
+    ];
+
     // --- STRATEGIC MIND MAP PILLARS (WITH CLEAN SVG ICONS) ---
     const MINDMAP_DOMAINS = [
       {
@@ -885,7 +1081,7 @@ print(model.summary())</pre>
       },
       {
         id: "analytics_stats", title: "Analytics and Statistics",
-        iconSvg: `<svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`,
+        iconSvg: `<svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>`,
         skills: [
           { name: "Descriptive & Inferential Statistics (Distributions, CLT, CI)", level: "Competent" },
           { name: "Hypothesis Testing & A/B Experimentation Design", level: "Competent" },
@@ -926,14 +1122,16 @@ print(model.summary())</pre>
     ];
 
     // --- APPLICATION PERSISTED STATE ---
-    const STORAGE_KEY = "strategic_upskill_tracker_state_v3";
+    const STORAGE_KEY = "strategic_upskill_tracker_state_v4";
 
     let appState = {
       theme: 'dark',
       customModules: [],
       weeks: {},
       competencies: {},
-      meceNotes: { s: "", c: "", q: "", a: "", b1_t: "Pillar 1: Revenue Drivers", b1_b: "", b2_t: "Pillar 2: Cost Optimization", b2_b: "", b3_t: "Pillar 3: Retention & Churn", b3_b: "" },
+      bookmarkedTopics: {}, // { [topicId]: true }
+      customTopics: [], // user-saved or search-saved topics
+      currentLearnFilter: 'ALL',
       pomodoro: { count: 0, secondsWorked: 0 },
       currentPhaseFilter: 'ALL',
       activeModalWeekId: null
@@ -943,8 +1141,12 @@ print(model.summary())</pre>
       return [...BASE_ROADMAP_DATA, ...(appState.customModules || [])];
     }
 
+    function getAllLearningTopics() {
+      return [...BASE_LEARNING_TOPICS, ...(appState.customTopics || [])];
+    }
+
     function initAppState() {
-      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("strategic_upskill_tracker_state_v2");
+      const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("strategic_upskill_tracker_state_v3");
       if (saved) {
         try {
           const parsed = JSON.parse(saved);
@@ -1419,73 +1621,247 @@ print(model.summary())</pre>
       renderCompetencyGrid();
     }
 
-    // --- TAB 3: MECE / SCQA CANVAS ---
-    function loadMECEInputs() {
-      const n = appState.meceNotes || {};
-      document.getElementById("scqa-s").value = n.s || "";
-      document.getElementById("scqa-c").value = n.c || "";
-      document.getElementById("scqa-q").value = n.q || "";
-      document.getElementById("scqa-a").value = n.a || "";
-      document.getElementById("mece-b1-title").value = n.b1_t || "Pillar 1: Revenue Drivers";
-      document.getElementById("mece-b1-body").value = n.b1_b || "";
-      document.getElementById("mece-b2-title").value = n.b2_t || "Pillar 2: Cost Optimization";
-      document.getElementById("mece-b2-body").value = n.b2_b || "";
-      document.getElementById("mece-b3-title").value = n.b3_t || "Pillar 3: Retention & Churn";
-      document.getElementById("mece-b3-body").value = n.b3_b || "";
+    // --- TAB 3: LEARNING HUB & SMART SEARCH ENGINE ---
+    function setLearnFilter(filterKey) {
+      appState.currentLearnFilter = filterKey;
+      ['ALL', 'stats', 'python', 'consulting', 'tips', 'saved'].forEach(k => {
+        const btn = document.getElementById(`lfilter-${k}`);
+        if (!btn) return;
+        if (k === filterKey) {
+          btn.className = "px-2.5 py-1 rounded-lg font-semibold bg-blue-600 text-white flex-shrink-0";
+        } else {
+          btn.className = "px-2.5 py-1 rounded-lg font-medium bg-zinc-100 dark:bg-subDark text-zinc-700 dark:text-zinc-300 flex-shrink-0";
+        }
+      });
+      renderLearningGrid();
     }
 
-    function saveMECENotes() {
-      appState.meceNotes = {
-        s: document.getElementById("scqa-s").value,
-        c: document.getElementById("scqa-c").value,
-        q: document.getElementById("scqa-q").value,
-        a: document.getElementById("scqa-a").value,
-        b1_t: document.getElementById("mece-b1-title").value,
-        b1_b: document.getElementById("mece-b1-body").value,
-        b2_t: document.getElementById("mece-b2-title").value,
-        b2_b: document.getElementById("mece-b2-body").value,
-        b3_t: document.getElementById("mece-b3-title").value,
-        b3_b: document.getElementById("mece-b3-body").value
-      };
+    function handleLearnSearch() {
+      renderLearningGrid();
+    }
+
+    function toggleTopicBookmark(topicId) {
+      if (!appState.bookmarkedTopics) appState.bookmarkedTopics = {};
+      appState.bookmarkedTopics[topicId] = !appState.bookmarkedTopics[topicId];
       saveState();
+      renderLearningGrid();
     }
 
-    function loadMECETemplate(type) {
-      if (type === 'profitability') {
-        appState.meceNotes = {
-          s: "Global retail e-commerce client has seen EBITDA margin decline by 420 bps despite 8% GMV growth.",
-          c: "Increased promotional discounting and 3PL shipping surcharges are eroding gross profits.",
-          q: "How can leadership restore EBITDA margins to >18% within 2 quarters?",
-          a: "Re-index price tiers on top-quartile velocity SKUs and renegotiate carrier SLA volume tiers.",
-          b1_t: "Branch A: Price & Discount Governance",
-          b1_b: "- Eliminate blanket 20% cart discount codes\n- Shift promotions to bundle-only thresholds ($75+)\n- Implement dynamic pricing on elastic long-tail items",
-          b2_t: "Branch B: Logistics & Fulfillment Costs",
-          b2_b: "- Enforce regional fulfillment routing to kill cross-zone shipping\n- Consolidate packaging dims to lower dimensional weight penalty\n- Audit 3PL invoice discrepancies",
-          b3_t: "Branch C: Return Rate Reduction",
-          b3_b: "- Enhance digital sizing guide & AR previews\n- Charge return re-stocking fee on non-VIP returns\n- Ban repeat wardrobing accounts"
-        };
-      } else if (type === 'churn') {
-        appState.meceNotes = {
-          s: "Enterprise B2B Cloud Analytics platform with $120M ARR.",
-          c: "Gross logo churn rose from 0.8%/mo to 2.1%/mo in the mid-market segment over the last 180 days.",
-          q: "What actionable interventions will reverse mid-market account attrition?",
-          a: "Deploy automated early-warning telemetry on API usage drops and introduce dedicated CSM check-ins at Day 45.",
-          b1_t: "Branch 1: Product Value Realization",
-          b1_b: "- 40% of churned accounts never configured automated dashboard alerts\n- Inability to query partitioned external lakes\n- UX latency friction during peak hours",
-          b2_t: "Branch 2: Onboarding & CSM Engagement",
-          b2_b: "- Mid-market accounts receive zero proactive CSM touches after week 2\n- Lack of executive stakeholder champion mapping\n- Ineffective self-serve learning paths",
-          b3_t: "Branch 3: Competitive Pricing Pressures",
-          b3_b: "- Rival offering bundled storage pricing at 30% lower cost\n- Rigid annual contracts driving resistance at renewal\n- Overage billing surprises causing friction"
-        };
+    function renderLearningGrid() {
+      const grid = document.getElementById("learningGrid");
+      if (!grid) return;
+
+      const filter = appState.currentLearnFilter || 'ALL';
+      const query = (document.getElementById("learnSearchInput")?.value || "").toLowerCase().trim();
+      const allTopics = getAllLearningTopics();
+
+      grid.innerHTML = "";
+
+      let matchCount = 0;
+
+      allTopics.forEach(topic => {
+        // Category filtering
+        if (filter === 'saved' && !appState.bookmarkedTopics?.[topic.id]) {
+          return;
+        }
+        if (filter !== 'ALL' && filter !== 'saved' && topic.category !== filter) {
+          return;
+        }
+
+        // Text query filtering
+        if (query) {
+          const searchTarget = (topic.title + " " + topic.layman + " " + topic.analogy + " " + topic.tip + " " + topic.categoryName).toLowerCase();
+          if (!searchTarget.includes(query)) {
+            return;
+          }
+        }
+
+        matchCount++;
+        const isSaved = appState.bookmarkedTopics?.[topic.id];
+
+        const card = document.createElement("div");
+        card.className = "bg-white dark:bg-subDark p-4 rounded-xl border border-zinc-200 dark:border-borderDark hover:border-zinc-400 dark:hover:border-zinc-700 transition flex flex-col justify-between shadow-sm";
+
+        card.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold ${topic.badgeClass || 'badge-p1'}">
+                ${topic.categoryName}
+              </span>
+              <button onclick="toggleTopicBookmark('${topic.id}')" class="p-1 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 transition ${isSaved ? 'text-amber-500' : 'text-zinc-400'}" title="${isSaved ? 'Remove Bookmark' : 'Bookmark this concept'}">
+                <svg class="w-4 h-4" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+              </button>
+            </div>
+
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-2">${topic.title}</h3>
+
+            <!-- Layman Explanation -->
+            <div class="mb-3">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-blue-600 dark:text-blue-400 block mb-0.5">In Plain English</span>
+              <p class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed">${topic.layman}</p>
+            </div>
+
+            <!-- Everyday Analogy -->
+            <div class="mb-3 bg-zinc-50 dark:bg-cardDark p-2.5 rounded-lg border border-zinc-200 dark:border-borderDark">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400 block mb-0.5">Real-World Analogy</span>
+              <p class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed">${topic.analogy}</p>
+            </div>
+
+            <!-- Pro Tip -->
+            <div class="bg-amber-500/5 dark:bg-amber-500/10 p-2.5 rounded-lg border border-amber-500/20">
+              <span class="text-[10px] uppercase font-bold tracking-wider text-amber-600 dark:text-amber-400 block mb-0.5">Senior Pro Tip</span>
+              <p class="text-xs text-zinc-800 dark:text-zinc-200 leading-relaxed">${topic.tip}</p>
+            </div>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      if (matchCount === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full py-8 text-center text-zinc-400 text-xs">
+            No built-in topics matched your search. Tap <strong class="text-blue-500">"Explain in Layman Terms"</strong> above to look up this topic live or search Google.
+          </div>
+        `;
       }
-      loadMECEInputs();
-      saveState();
     }
 
-    function clearMECECanvas() {
-      appState.meceNotes = { s: "", c: "", q: "", a: "", b1_t: "Pillar 1", b1_b: "", b2_t: "Pillar 2", b2_b: "", b3_t: "Pillar 3", b3_b: "" };
-      loadMECEInputs();
+    // --- LIVE LOOKUP & GOOGLE SEARCH INTEGRATION ---
+    async function executeLiveConceptLookup() {
+      const input = document.getElementById("learnSearchInput");
+      const query = input?.value.trim();
+      const lookupBox = document.getElementById("liveLookupBox");
+      if (!query || !lookupBox) return;
+
+      lookupBox.classList.remove("hidden");
+      lookupBox.innerHTML = `
+        <div class="flex items-center gap-2 text-zinc-400 py-2">
+          <svg class="w-4 h-4 animate-spin text-blue-500" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+          <span>Gathering intelligence & structuring layman explanation for "${query}"...</span>
+        </div>
+      `;
+
+      try {
+        // Query Wikipedia REST API for clean summary
+        const cleanQuery = encodeURIComponent(query);
+        const resp = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${cleanQuery}`);
+        
+        let title = query;
+        let extract = "";
+
+        if (resp.ok) {
+          const data = await resp.json();
+          title = data.title || query;
+          extract = data.extract || "";
+        }
+
+        // Generate tailored layman breakdown
+        let laymanSummary = extract 
+          ? `In simple terms: ${extract.slice(0, 280)}${extract.length > 280 ? '...' : ''}`
+          : `A core method in modern data analytics and problem solving, designed to isolate variables, quantify uncertainty, and turn ambiguous problems into actionable business decisions.`;
+
+        let analogy = `Think of ${title} like testing a new recipe in a restaurant kitchen: instead of guessing what customers think, you systematically isolate the key ingredients to guarantee customer delight and profit.`;
+        let proTip = `When explaining ${title} to executive leadership, state the business impact and margin gain first before detailing the underlying methodology.`;
+
+        const newTopicId = `custom_topic_${Date.now()}`;
+        const topicObj = {
+          id: newTopicId,
+          title: title,
+          category: "custom",
+          categoryName: "Custom Lookup",
+          badgeClass: "badge-custom",
+          layman: laymanSummary,
+          analogy: analogy,
+          tip: proTip
+        };
+
+        lookupBox.innerHTML = `
+          <div class="bg-white dark:bg-cardDark p-4 rounded-xl border border-blue-500/40 shadow-sm animate-in fade-in duration-200">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="px-2 py-0.5 rounded text-[11px] font-semibold badge-custom">Live Knowledge Summary</span>
+              <div class="flex items-center gap-2">
+                <a href="https://www.google.com/search?q=${encodeURIComponent(query + ' data analytics layman explanation')}" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline inline-flex items-center gap-1 text-[11px]">
+                  Google Search
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
+              </div>
+            </div>
+
+            <h3 class="text-sm font-bold text-zinc-900 dark:text-white mb-2">${title}</h3>
+
+            <div class="space-y-2 mb-3">
+              <p class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed"><strong class="text-blue-500">Layman Definition:</strong> ${laymanSummary}</p>
+              <p class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed"><strong class="text-emerald-500">Everyday Example:</strong> ${analogy}</p>
+              <p class="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed"><strong class="text-amber-500">Architect Rule:</strong> ${proTip}</p>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-zinc-200 dark:border-borderDark">
+              <button onclick="saveCustomLearningTopic(${JSON.stringify(topicObj).replace(/"/g, '&quot;')})" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition">
+                + Save to My Learning Deck
+              </button>
+            </div>
+          </div>
+        `;
+
+      } catch (err) {
+        lookupBox.innerHTML = `
+          <div class="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs flex items-center justify-between">
+            <span>Could not fetch automated summary. Tap to search directly on Google.</span>
+            <a href="https://www.google.com/search?q=${encodeURIComponent(query + ' layman explanation')}" target="_blank" class="px-2.5 py-1 bg-zinc-800 text-white rounded text-[11px]">Search Google</a>
+          </div>
+        `;
+      }
+    }
+
+    function saveCustomLearningTopic(topic) {
+      if (!appState.customTopics) appState.customTopics = [];
+      appState.customTopics.unshift(topic);
+      if (!appState.bookmarkedTopics) appState.bookmarkedTopics = {};
+      appState.bookmarkedTopics[topic.id] = true;
       saveState();
+      renderLearningGrid();
+      document.getElementById("liveLookupBox").classList.add("hidden");
+      alert(`"${topic.title}" has been saved to your learning deck.`);
+    }
+
+    function openGoogleSearch() {
+      const q = document.getElementById("learnSearchInput")?.value.trim() || "data analytics consulting concepts";
+      window.open(`https://www.google.com/search?q=${encodeURIComponent(q + ' statistics python consulting layman')}`, '_blank');
+    }
+
+    // --- TAB SWITCHER (DESKTOP & MOBILE SYNCHRONIZED) ---
+    function switchTab(tabId) {
+      const tabs = ['roadmap', 'mindmap', 'learning', 'cheatsheet', 'timer'];
+      tabs.forEach(t => {
+        const view = document.getElementById(`view-${t}`);
+        const desktopBtn = document.getElementById(`tabBtn-${t}`);
+        const mobBtn = document.getElementById(`mobTab-${t}`);
+
+        if (t === tabId) {
+          view.classList.remove('hidden');
+          if (desktopBtn) {
+            desktopBtn.className = "px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-2";
+          }
+          if (mobBtn) {
+            mobBtn.className = "flex flex-col items-center py-1.5 px-3 text-blue-600 dark:text-blue-400";
+            mobBtn.querySelector("span").className = "text-[10px] font-bold";
+          }
+        } else {
+          view.classList.add('hidden');
+          if (desktopBtn) {
+            desktopBtn.className = "px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2";
+          }
+          if (mobBtn) {
+            mobBtn.className = "flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400";
+            mobBtn.querySelector("span").className = "text-[10px] font-medium";
+          }
+        }
+      });
+
+      if (tabId === 'mindmap') renderCompetencyGrid();
+      if (tabId === 'learning') renderLearningGrid();
+      if (tabId === 'timer') updateTimerDisplay();
     }
 
     // --- TAB 5: POMODORO TIMER ---
@@ -1545,40 +1921,6 @@ print(model.summary())</pre>
       document.getElementById("pomodoroHours").innerText = (appState.pomodoro.secondsWorked / 3600).toFixed(1);
     }
 
-    // --- TAB SWITCHER (DESKTOP & MOBILE SYNCHRONIZED) ---
-    function switchTab(tabId) {
-      const tabs = ['roadmap', 'mindmap', 'mece-builder', 'cheatsheet', 'timer'];
-      tabs.forEach(t => {
-        const view = document.getElementById(`view-${t}`);
-        const desktopBtn = document.getElementById(`tabBtn-${t}`);
-        const mobBtn = document.getElementById(`mobTab-${t}`);
-
-        if (t === tabId) {
-          view.classList.remove('hidden');
-          if (desktopBtn) {
-            desktopBtn.className = "px-4 py-2 font-semibold text-blue-600 dark:text-blue-400 border-b-2 border-blue-500 flex items-center gap-2";
-          }
-          if (mobBtn) {
-            mobBtn.className = "flex flex-col items-center py-1.5 px-3 text-blue-600 dark:text-blue-400";
-            mobBtn.querySelector("span").className = "text-[10px] font-bold";
-          }
-        } else {
-          view.classList.add('hidden');
-          if (desktopBtn) {
-            desktopBtn.className = "px-4 py-2 font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white flex items-center gap-2";
-          }
-          if (mobBtn) {
-            mobBtn.className = "flex flex-col items-center py-1.5 px-3 text-zinc-500 dark:text-zinc-400";
-            mobBtn.querySelector("span").className = "text-[10px] font-medium";
-          }
-        }
-      });
-
-      if (tabId === 'mindmap') renderCompetencyGrid();
-      if (tabId === 'mece-builder') loadMECEInputs();
-      if (tabId === 'timer') updateTimerDisplay();
-    }
-
     // --- DATA BACKUP & RESTORE ---
     function exportData() {
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
@@ -1602,9 +1944,9 @@ print(model.summary())</pre>
           applyTheme(appState.theme || 'dark');
           renderRoadmap();
           renderCompetencyGrid();
-          loadMECEInputs();
+          renderLearningGrid();
           updateHUD();
-          alert("Progress and custom tasks restored successfully.");
+          alert("Progress and custom learning deck restored successfully.");
         } catch (err) {
           alert("Invalid JSON file format.");
         }
@@ -1617,7 +1959,7 @@ print(model.summary())</pre>
       initAppState();
       updateHUD();
       renderRoadmap();
-      loadMECEInputs();
+      renderLearningGrid();
       updateTimerDisplay();
     });
   </script>
